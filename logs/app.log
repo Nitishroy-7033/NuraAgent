@@ -1,0 +1,3 @@
+2026-03-19 01:44:14 | INFO     | app | Starting JARVIS...
+2026-03-19 01:44:14 | INFO     | agents.chatagent | Agent 'ChatAgent' initialized.
+2026-03-19 01:44:36 | INFO     | app | Keyboard interrupt received.
