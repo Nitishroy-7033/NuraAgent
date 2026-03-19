@@ -1,120 +1,108 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { Routes, Route, NavLink, Link, useLocation } from 'react-router-dom'
+import { 
+  Settings, 
+  MessageSquare, 
+  Terminal, 
+  Cpu, 
+  LayoutGrid 
+} from 'lucide-react'
+
+// Page Imports
+import ChatPage from './pages/Chat'
+import AgentsPage from './pages/Agents'
+import SettingsPage from './pages/Settings'
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState([
+    { role: 'assistant', content: 'NeraAgent Core initialized. Neural links established. How may I assist you, sir?' }
+  ])
+  const [systemState, setSystemState] = useState('Online')
+  const location = useLocation()
+
+  const onMessageSent = (newMessages) => {
+    setMessages(prev => [...prev, ...newMessages])
+  }
+
+  const navLinks = [
+    { to: '/', label: 'Neural Link', icon: MessageSquare, id: 'chat' },
+    { to: '/agents', label: 'Agent Hub', icon: LayoutGrid, id: 'agents' },
+    { to: '/settings', label: 'Sys Control', icon: Settings, id: 'settings' },
+  ]
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="flex flex-col h-screen w-screen bg-background text-foreground selection:bg-primary/30 selection:text-primary overflow-hidden">
+      {/* 1. TOP NAVBAR - Persistent across views */}
+      <header className="h-12 border-b border-primary/10 flex items-center justify-between px-6 bg-black/80 backdrop-blur-3xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] z-50 shrink-0">
+        <div className="flex items-center gap-6 h-full">
+          <Link to="/" className="flex items-center gap-2.5 cursor-pointer group pr-4 border-r border-primary/10">
+            <Cpu size={18} className="text-glow animate-pulse text-primary" />
+            <span className="font-bold text-lg tracking-tighter text-glow uppercase italic text-primary">NeraAgent</span>
+          </Link>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <nav className="flex items-center gap-1 h-full">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) => `flex items-center gap-2 px-4 h-full border-b transition-all relative ${
+                  isActive 
+                  ? 'border-primary text-primary bg-primary/5' 
+                  : 'border-transparent text-primary/40 hover:text-primary/60 hover:bg-white/5'
+                }`}
+              >
+                <link.icon size={14} />
+                <span className="text-[10px] font-black uppercase tracking-[0.15em] italic">{link.label}</span>
+                {location.pathname === link.to && (
+                  <div className="absolute bottom-[-1px] left-0 w-full h-[1.5px] bg-primary shadow-[0_0_8px_oklch(0.7_0.2_200)]" />
+                )}
+              </NavLink>
+            ))}
+          </nav>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+        
+        <div className="flex items-center gap-5">
+          <div className="hidden lg:flex flex-col items-end mr-1">
+             <div className="flex items-center gap-1.5">
+                <div className={`w-1.5 h-1.5 rounded-full ${systemState === 'Processing' ? 'bg-amber-500 animate-pulse' : 'bg-primary animation-pulse'}`} />
+                <span className="text-[9px] font-mono text-primary text-glow uppercase tracking-wider">{systemState}</span>
+              </div>
+              <span className="text-[7px] font-bold text-primary/40 uppercase tracking-[0.2em] font-mono leading-none">Net_v8.0</span>
+          </div>
+          <div className="h-6 w-[1px] bg-primary/10" />
+          <span className="text-xs font-mono text-primary/80 tracking-widest">{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
         </div>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      {/* 2. DYNAMIC PAGE CONTENT - Changes completely based on route */}
+      <main className="flex-1 flex overflow-hidden">
+        <Routes>
+          <Route path="/" element={
+            <ChatPage 
+              messages={messages} 
+              onMessageSent={onMessageSent}
+              systemState={systemState}
+              setSystemState={setSystemState}
+            />
+          } />
+          <Route path="/agents" element={<AgentsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/terminal" element={
+            <div className="flex-1 flex items-center justify-center bg-black/90 tech-grid">
+               <div className="text-center space-y-4">
+                 <div className="w-20 h-20 rounded-full border-2 border-primary/20 flex items-center justify-center mx-auto">
+                    <Terminal className="text-primary animate-pulse" size={40} />
+                 </div>
+                 <h2 className="text-primary text-2xl font-black italic uppercase tracking-widest">Access Restricted</h2>
+                 <p className="text-primary/40 font-mono text-xs">Waiting for admin authentication protocol...</p>
+               </div>
+            </div>
+          } />
+        </Routes>
+      </main>
+    </div>
   )
 }
 
