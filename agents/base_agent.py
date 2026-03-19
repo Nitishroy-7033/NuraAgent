@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from core.chat import ChatSession
+from knowledge.store import ChatSession
 from utils.logger import setup_logger
 
 

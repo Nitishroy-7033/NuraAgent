@@ -3,10 +3,9 @@ from .base_agent import BaseAgent
 from core.chat import stream_chat, chat
 
 
-CHAT_AGENT_PROMPT = """You are JARVIS, a highly intelligent personal AI assistant.
-You are helpful, precise, and adaptive. You assist with coding, logic, research,
-planning, and general knowledge. You remember context within a conversation.
-Keep responses clear and structured."""
+from utils.prompts import JARVIS_SYSTEM_PROMPT
+
+CHAT_AGENT_PROMPT = JARVIS_SYSTEM_PROMPT
 
 
 class ChatAgent(BaseAgent):
@@ -23,9 +22,10 @@ class ChatAgent(BaseAgent):
         )
 
     def run(self, user_input: str) -> Generator[str, None, None]:
-        """Streams response for the given user input."""
-        return stream_chat(user_input, self.session)
+        yield from stream_chat(user_input, self.session)
 
     def run_sync(self, user_input: str) -> str:
         """Non-streaming version, returns full response string."""
         return chat(user_input, self.session)
+
+        

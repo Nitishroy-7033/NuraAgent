@@ -2,14 +2,13 @@ import logging
 import os
 import sys
 from pathlib import Path
-from core.config import config
-
-
 def setup_logger(name: str):
     """
     Configures a logger with both console and file handlers.
     Usage: logger = setup_logger(__name__)
     """
+    from core.config import config  # Import here to break circularity
+    
     logger = logging.getLogger(name)
     
     # Avoid duplicate handlers if setup multiple times

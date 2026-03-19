@@ -1,39 +1,13 @@
 import requests
 import json
-from typing import Generator, Optional
+from typing import Generator
 from core.config import config
 from utils.logger import setup_logger
+from knowledge.store import ChatSession
 
 logger = setup_logger("core.chat")
 
 
-SYSTEM_PROMPT = """You are JARVIS, a highly intelligent personal AI assistant.
-You are helpful, precise, and adaptive. You assist with coding, logic, research, 
-planning, and general knowledge. You remember context within a conversation.
-Keep responses clear and structured."""
-
-
-class ChatSession:
-    """
-    Manages a single conversation session with message history.
-    Designed to be reusable inside an agent later.
-    """
-
-    def __init__(self, system_prompt: Optional[str] = None):
-        self.system_prompt = system_prompt or SYSTEM_PROMPT
-        self.history: list[dict] = []
-
-    def add_message(self, role: str, content: str):
-        self.history.append({"role": role, "content": content})
-        # Trim history to avoid context overflow
-        if len(self.history) > config.max_history:
-            self.history = self.history[-config.max_history:]
-
-    def get_messages(self) -> list[dict]:
-        return self.history
-
-    def clear(self):
-        self.history = []
 
 
 def stream_chat(
