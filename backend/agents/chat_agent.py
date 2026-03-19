@@ -1,8 +1,6 @@
 from typing import Generator
 from .base_agent import BaseAgent
 from core.chat import stream_chat, chat
-
-
 from utils.prompts import JARVIS_SYSTEM_PROMPT
 
 CHAT_AGENT_PROMPT = JARVIS_SYSTEM_PROMPT

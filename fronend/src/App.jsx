@@ -1,5 +1,6 @@
-import { useState } from 'react'
 import { Routes, Route, NavLink, Link, useLocation } from 'react-router-dom'
+import { Provider, useSelector } from 'react-redux'
+import store from './store'
 import { 
   Settings, 
   MessageSquare, 
@@ -12,19 +13,13 @@ import {
 import ChatPage from './pages/Chat'
 import AgentsPage from './pages/Agents'
 import SettingsPage from './pages/Settings'
+import { Loader } from './components/prompt-kit/loader'
 
 import './App.css'
 
-function App() {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'NeraAgent Core initialized. Neural links established. How may I assist you, sir?' }
-  ])
-  const [systemState, setSystemState] = useState('Online')
+function AppContent() {
+  const systemState = useSelector((state) => state.chat.systemState)
   const location = useLocation()
-
-  const onMessageSent = (newMessages) => {
-    setMessages(prev => [...prev, ...newMessages])
-  }
 
   const navLinks = [
     { to: '/', label: 'Neural Link', icon: MessageSquare, id: 'chat' },
@@ -33,7 +28,16 @@ function App() {
   ]
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-background text-foreground selection:bg-primary/30 selection:text-primary overflow-hidden">
+    <div className="flex flex-col h-screen w-screen bg-background text-foreground selection:bg-primary/30 selection:text-primary overflow-hidden relative">
+      {/* Global HUD Flourishes */}
+      <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden">
+        <div className="absolute top-2 left-6 text-[8px] font-mono text-primary/20 tracking-[0.4em] uppercase">System_Active // Port_8080</div>
+        <div className="absolute bottom-4 right-6 text-[8px] font-mono text-primary/20 tracking-[0.4em] uppercase">Nera_Core // v8.0.42</div>
+        <div className="absolute top-1/2 left-2 w-1 h-32 bg-primary/5 rounded-full -translate-y-1/2" />
+        <div className="absolute top-1/2 right-2 w-1 h-32 bg-primary/5 rounded-full -translate-y-1/2" />
+        <div className="scanline opacity-5" />
+      </div>
+
       {/* 1. TOP NAVBAR - Persistent across views */}
       <header className="h-12 border-b border-primary/10 flex items-center justify-between px-6 bg-black/80 backdrop-blur-3xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] z-50 shrink-0">
         <div className="flex items-center gap-6 h-full">
@@ -66,8 +70,14 @@ function App() {
         <div className="flex items-center gap-5">
           <div className="hidden lg:flex flex-col items-end mr-1">
              <div className="flex items-center gap-1.5">
-                <div className={`w-1.5 h-1.5 rounded-full ${systemState === 'Processing' ? 'bg-amber-500 animate-pulse' : 'bg-primary animation-pulse'}`} />
-                <span className="text-[9px] font-mono text-primary text-glow uppercase tracking-wider">{systemState}</span>
+                {systemState === 'Processing' ? (
+                  <Loader variant="terminal" className="scale-75 origin-right" />
+                ) : (
+                  <>
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary animation-pulse" />
+                    <span className="text-[9px] font-mono text-primary text-glow uppercase tracking-wider">{systemState}</span>
+                  </>
+                )}
               </div>
               <span className="text-[7px] font-bold text-primary/40 uppercase tracking-[0.2em] font-mono leading-none">Net_v8.0</span>
           </div>
@@ -79,14 +89,7 @@ function App() {
       {/* 2. DYNAMIC PAGE CONTENT - Changes completely based on route */}
       <main className="flex-1 flex overflow-hidden">
         <Routes>
-          <Route path="/" element={
-            <ChatPage 
-              messages={messages} 
-              onMessageSent={onMessageSent}
-              systemState={systemState}
-              setSystemState={setSystemState}
-            />
-          } />
+          <Route path="/" element={<ChatPage />} />
           <Route path="/agents" element={<AgentsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/terminal" element={
@@ -103,6 +106,14 @@ function App() {
         </Routes>
       </main>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
   )
 }
 

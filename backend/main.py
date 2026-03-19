@@ -1,3 +1,5 @@
+import sys
+import uvicorn
 from agents.chat_agent import ChatAgent
 from core.config import config
 from utils.logger import setup_logger
@@ -5,8 +7,8 @@ from utils.logger import setup_logger
 logger = setup_logger("app")
 
 
-def main():
-    logger.info(f"Starting {config.app_name}...")
+def start_cli():
+    logger.info(f"Starting {config.app_name} CLI...")
     print(f"\n{'='*50}")
     print(f"  {config.app_name} - Personal AI Assistant")
     print(f"  Model: {config.ollama_model}")
@@ -44,6 +46,14 @@ def main():
             logger.info("Keyboard interrupt received.")
             print("\n\nJARVIS: Shutting down.")
             break
+
+
+def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "--api":
+        logger.info("Starting API server...")
+        uvicorn.run("api.app:app", host="0.0.0.0", port=8000, reload=True)
+    else:
+        start_cli()
 
 
 if __name__ == "__main__":

@@ -1,4 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { 
+  addMessages, 
+  updateLastAssistantMessage, 
+  setSystemState 
+} from '../store/slices/chatSlice'
+import { streamChat } from '../api/chat'
+import { Loader } from '../components/prompt-kit/loader'
+import { Markdown } from '../components/prompt-kit/markdown'
 import {
   Plus,
   Send,
@@ -28,9 +37,13 @@ const ChatHistoryItem = ({ title, active = false }) => (
   </div>
 )
 
-export default function ChatPage({ messages, onMessageSent, systemState, setSystemState }) {
+export default function ChatPage() {
   const [inputValue, setInputValue] = useState('')
   const chatEndRef = useRef(null)
+  
+  const dispatch = useDispatch()
+  const messages = useSelector((state) => state.chat.messages)
+  const systemState = useSelector((state) => state.chat.systemState)
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -40,19 +53,37 @@ export default function ChatPage({ messages, onMessageSent, systemState, setSyst
     scrollToBottom()
   }, [messages])
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!inputValue.trim()) return
-    
-    // Send user message
-    onMessageSent([{ role: 'user', content: inputValue }])
+
+    const userText = inputValue
     setInputValue('')
-    setSystemState('Processing')
     
-    // Simulate Nera response
-    setTimeout(() => {
-      onMessageSent([{ role: 'assistant', content: 'Neural pathways identified. Data synchronized with central core. Request logged.' }])
-      setSystemState('Online')
-    }, 1500)
+    // 1. Add user message
+    dispatch(addMessages([{ role: 'user', content: userText }]))
+    dispatch(setSystemState('Processing'))
+
+    // 2. Add empty assistant message to be filled
+    dispatch(addMessages([{ role: 'assistant', content: '' }]))
+
+    // 3. Start streaming
+    await streamChat(
+      userText,
+      (chunk, fullContent) => {
+        // On each chunk
+        dispatch(updateLastAssistantMessage(fullContent))
+      },
+      () => {
+        // On done
+        dispatch(setSystemState('Online'))
+      },
+      (error) => {
+        // On error
+        console.error('Streaming error:', error)
+        dispatch(updateLastAssistantMessage(`[SYSTEM ERROR]: Neural link failed. ${error.message}`))
+        dispatch(setSystemState('Online'))
+      }
+    )
   }
 
   return (
@@ -83,27 +114,39 @@ export default function ChatPage({ messages, onMessageSent, systemState, setSyst
       </Sidebar>
 
       <div className="flex-1 flex flex-col relative tech-grid min-w-0">
-        <div className="flex-1 overflow-y-auto px-6 py-10 md:px-20 space-y-8 custom-scrollbar relative">
+        <div className="flex-1 overflow-y-auto px-6 py-10 md:px-20 space-y-12 custom-scrollbar relative">
+           <div className="noise-overlay" />
            {/* Visual Flourish: Active Line Indicator */}
-           <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/5 via-primary/20 to-primary/5" />
+           <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/5 via-primary/40 to-primary/5" />
            
           {messages.map((msg, i) => (
-            <div key={i} className={`flex gap-6 ${msg.role === 'user' ? 'flex-row-reverse' : ''} animate-in fade-in slide-in-from-bottom-4 duration-500`}>
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border-2 ${msg.role === 'user'
-                ? 'bg-primary/20 border-primary text-primary shadow-[0_0_15px_oklch(0.7_0.2_200_/_0.3)]'
-                : 'bg-black/80 border-primary/30 text-primary'
+            <div key={i} className={`flex gap-6 ${msg.role === 'user' ? 'flex-row-reverse' : ''} animate-in fade-in slide-in-from-bottom-4 duration-500 group/message`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border-2 transition-all duration-300 ${msg.role === 'user'
+                ? 'bg-primary/20 border-primary text-primary shadow-[0_0_20px_oklch(0.7_0.2_200_/_0.3)] group-hover/message:scale-110'
+                : 'bg-black/80 border-primary/30 text-primary group-hover/message:border-primary group-hover/message:shadow-[0_0_15px_oklch(0.7_0.2_200_/_0.2)]'
                 }`}>
                 {msg.role === 'user' ? <User size={24} /> : <Cpu size={24} />}
               </div>
-              <div className={`flex flex-col gap-3 max-w-[70%] ${msg.role === 'user' ? 'items-end' : ''}`}>
-                <div className={`px-6 py-4 rounded-3xl text-sm md:text-base leading-relaxed relative ${msg.role === 'user'
-                  ? 'bg-primary text-primary-foreground font-semibold rounded-tr-none'
-                  : 'bg-primary/5 border-2 border-primary/30 text-primary/95 backdrop-blur-3xl rounded-tl-none shadow-[inset_0_0_20px_oklch(0.7_0.2_200_/_0.1)]'
+              <div className={`flex flex-col gap-3 max-w-[80%] ${msg.role === 'user' ? 'items-end' : ''}`}>
+                <div className={`px-6 py-5 rounded-2xl text-[15px] leading-relaxed relative overflow-hidden transition-all duration-300 ${msg.role === 'user'
+                  ? 'bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 text-primary font-bold rounded-tr-none user-bubble-glow corner-bottom-left animate-in fade-in zoom-in-95'
+                  : 'bg-black/40 border-2 border-primary/20 text-primary/95 backdrop-blur-3xl rounded-tl-none shadow-[inset_0_0_30px_oklch(0.7_0.2_200_/_0.05)] hover:border-primary/40 corner-top-right transition-colors'
                   }`}>
+                  
+                  {/* Subtle Scanline for Assistant */}
                   {msg.role === 'assistant' && (
-                    <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary translate-x-[-2px] translate-y-[-2px] rounded-tl-lg" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent bg-[length:100%_4px] opacity-20 pointer-events-none" />
                   )}
-                  {msg.content}
+
+                  {msg.content ? (
+                    <div className="relative z-10">
+                      <Markdown>{msg.content}</Markdown>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 py-2">
+                      <Loader variant="terminal" />
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 group">
                   <span className="text-[9px] text-primary/40 uppercase tracking-[0.3em] font-black italic">
@@ -115,10 +158,23 @@ export default function ChatPage({ messages, onMessageSent, systemState, setSyst
               </div>
             </div>
           ))}
+
+          {systemState === 'Processing' && messages[messages.length - 1]?.role !== 'assistant' && (
+             <div className="flex gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border-2 bg-black/80 border-primary/30 text-primary">
+                  <Cpu size={24} className="animate-pulse" />
+                </div>
+                <div className="flex flex-col gap-3">
+                  <div className="px-6 py-4 rounded-3xl text-sm md:text-base leading-relaxed relative bg-primary/5 border-2 border-primary/30 text-primary/95 backdrop-blur-3xl rounded-tl-none corner-top-right">
+                    <Loader variant="terminal" />
+                  </div>
+                </div>
+             </div>
+          )}
           <div ref={chatEndRef} />
         </div>
 
-        <div className="p-8 bg-gradient-to-t from-black via-black/80 to-transparent sticky bottom-0">
+        <div className="p-8 bg-gradient-to-t from-black via-black/80 to-transparent sticky bottom-0 z-20">
           <div className="max-w-5xl mx-auto relative">
             <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-primary/30 rounded-tl-2xl" />
             <div className="absolute -top-4 -right-4 w-8 h-8 border-t-2 border-r-2 border-primary/30 rounded-tr-2xl" />
@@ -149,11 +205,11 @@ export default function ChatPage({ messages, onMessageSent, systemState, setSyst
                 <div className="flex items-center gap-4">
                   <Button
                     onClick={handleSend}
-                    disabled={!inputValue.trim()}
+                    disabled={!inputValue.trim() || systemState === 'Processing'}
                     className="rounded-2xl px-8 h-12 gap-3 bg-primary text-primary-foreground hover:bg-primary/80 shadow-[0_0_20px_oklch(0.7_0.2_200_/_0.4)] active:scale-95 transition-all uppercase font-black italic tracking-tighter text-base"
                   >
-                    Send
-                    <Send size={20} className="text-glow" />
+                    {systemState === 'Processing' ? 'Thinking...' : 'Send'}
+                    <Send size={20} className={systemState === 'Processing' ? 'animate-pulse' : 'text-glow'} />
                   </Button>
                 </div>
               </PromptInputActions>

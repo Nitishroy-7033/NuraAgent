@@ -41,3 +41,28 @@
 2026-03-19 14:21:48 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): now tell me what is my name
 2026-03-19 14:21:52 | INFO     | knowledge.store | 💾 Message stored: role=assistant, length=250
 2026-03-19 14:23:35 | INFO     | app | Keyboard interrupt received.
+2026-03-20 04:48:26 | INFO     | app | Starting JARVIS CLI...
+2026-03-20 04:48:26 | DEBUG    | knowledge.store | ChatSession initialized with 254 chars of system prompt.
+2026-03-20 04:48:26 | INFO     | agents.chatagent | Agent 'ChatAgent' initialized.
+2026-03-20 04:49:04 | INFO     | knowledge.store | 💾 Message stored: role=user, length=2
+2026-03-20 04:49:04 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): hi
+2026-03-20 04:49:17 | INFO     | app | Keyboard interrupt received.
+2026-03-20 04:49:20 | INFO     | app | Starting API server...
+2026-03-20 04:49:25 | DEBUG    | knowledge.store | ChatSession initialized with 254 chars of system prompt.
+2026-03-20 04:49:25 | INFO     | agents.chatagent | Agent 'ChatAgent' initialized.
+2026-03-20 04:49:47 | INFO     | api | Received stream request: hi...
+2026-03-20 04:49:47 | INFO     | knowledge.store | 💾 Message stored: role=user, length=2
+2026-03-20 04:49:47 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): hi
+2026-03-20 04:49:51 | INFO     | knowledge.store | 💾 Message stored: role=assistant, length=182
+2026-03-20 04:49:57 | INFO     | api | Received stream request: hi...
+2026-03-20 04:49:57 | INFO     | knowledge.store | 💾 Message stored: role=user, length=2
+2026-03-20 04:49:57 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): hi
+2026-03-20 04:50:05 | INFO     | knowledge.store | 💾 Message stored: role=assistant, length=507
+2026-03-20 04:51:51 | INFO     | api | Received stream request: what can you do for me ...
+2026-03-20 04:51:51 | INFO     | knowledge.store | 💾 Message stored: role=user, length=23
+2026-03-20 04:51:51 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): what can you do for me 
+2026-03-20 04:52:18 | INFO     | knowledge.store | 💾 Message stored: role=assistant, length=1681
+2026-03-20 04:53:00 | INFO     | api | Received stream request: sdf...
+2026-03-20 04:53:00 | INFO     | knowledge.store | 💾 Message stored: role=user, length=3
+2026-03-20 04:53:00 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): sdf
+2026-03-20 04:53:06 | INFO     | knowledge.store | 💾 Message stored: role=assistant, length=282
