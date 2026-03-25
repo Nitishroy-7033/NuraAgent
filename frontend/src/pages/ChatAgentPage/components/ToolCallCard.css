@@ -1,0 +1,149 @@
+.tool-call-card {
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tool-calls-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 8px 0;
+}
+
+.tool-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.tool-card-header:hover {
+    background: var(--card-hover-bg);
+}
+
+.tool-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tool-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+}
+
+.tool-name {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.status-pill {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.chevron {
+    color: var(--text-tertiary);
+    transition: transform 0.2s;
+}
+
+.chevron.up {
+    transform: rotate(180deg);
+}
+
+.tool-card-body {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background: var(--main-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tool-section label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tool-code-block {
+    background: var(--promo-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.code-line .key {
+    color: var(--text-secondary);
+    margin-right: 8px;
+}
+
+.code-line .val {
+    color: var(--primary-orange);
+}
+
+.tool-output-pre {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--text-secondary);
+    max-height: 250px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+}
+
+/* Custom Scrollbar for Code Block */
+.tool-output-pre::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tool-output-pre::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.tool-status-msg {
+    font-size: 13.5px;
+    color: var(--text-tertiary);
+    font-style: italic;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+}
+
+.tool-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border-color);
+    border-top-color: #4285F4;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate { to { transform: rotate(360deg); } }

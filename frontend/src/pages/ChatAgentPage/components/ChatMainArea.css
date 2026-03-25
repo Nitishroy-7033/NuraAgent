@@ -97,7 +97,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 24px;
+    padding: 60px 24px;
+    scroll-behavior: smooth;
+}
+
+.chat-content.with-history {
+    padding-top: 40px;
+}
+
+.messages-stream {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
 }
 
 .welcome-section {
@@ -113,7 +125,6 @@
     height: 64px;
     margin-bottom: 24px;
     filter: sepia(100%) hue-rotate(-20deg) saturate(500%);
-    /* Make it orange-ish */
 }
 
 .welcome-section h1 {
@@ -128,6 +139,16 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-top: auto;
+    background: var(--main-bg);
+}
+
+.chat-content.with-history .input-pnl {
+    position: sticky;
+    bottom: -20px;
+    background: var(--main-bg);
+    padding: 20px 0;
+    z-index: 10;
 }
 
 .suggested-questions {
