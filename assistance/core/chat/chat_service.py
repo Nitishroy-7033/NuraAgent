@@ -1,6 +1,6 @@
-import requests
+import httpx
 import json
-from typing import Generator, List, Dict, Optional
+from typing import AsyncGenerator, List, Dict, Optional
 from core.config import config as default_config
 from utils.logger import Logger
 
@@ -11,24 +11,22 @@ class ChatService:
         self.config = config or default_config
         self.logger = logger or default_logger
 
-    def stream_chat_completion(
+    async def stream_chat_completion(
         self, 
         query: str, 
         system_prompt: Optional[str] = None, 
         thread_id: Optional[str] = None
-    ) -> Generator[str, None, None]:
+    ) -> AsyncGenerator[str, None]:
         """
-        Streams chat completions from the Ollama API.
+        Asynchronously streams chat completions from the Ollama API using httpx.
         """
         self.logger.info(f"Query sending to Ollama API: {query}")
         
-        # Prepare messages
         messages = [
             {"role": "system", "content": system_prompt or "You are a helpful assistant."},
             {"role": "user", "content": query}
         ]
 
-        # Payload construction
         payload = {
             "model": self.config.ollama_model,
             "messages": messages,
@@ -38,60 +36,53 @@ class ChatService:
         url = f"{self.config.ollama_base_url}/api/chat"
 
         try:
-            with requests.post(
-                url,
-                json=payload,
-                stream=True,
-                timeout=120
-            ) as response:
-                response.raise_for_status()
-                full_response = ""
-                
-                for line in response.iter_lines():
-                    if not line:
-                        continue
-                        
-                    try:
-                        chunk = json.loads(line.decode('utf-8'))
-                        token = chunk.get("message", {}).get("content", "")
-                        
-                        if token:
-                            full_response += token
-                            yield token
+            async with httpx.AsyncClient(timeout=120.0) as client:
+                async with client.stream("POST", url, json=payload) as response:
+                    response.raise_for_status()
+                    full_response = ""
+                    
+                    async for line in response.aiter_lines():
+                        if not line:
+                            continue
                             
-                        if chunk.get("done"):
-                            self.logger.info(f"Full response received: {full_response}")
-                            # TODO: Add to memory/history logic here if thread_id is provided
-                            if thread_id:
-                                self._add_to_memory(thread_id, query, full_response)
-                            break
-                    except json.JSONDecodeError as e:
-                        self.logger.error(f"Error decoding JSON chunk: {e}")
-                        continue
+                        try:
+                            chunk = json.loads(line)
+                            token = chunk.get("message", {}).get("content", "")
+                            
+                            if token:
+                                full_response += token
+                                yield token
+                                
+                            if chunk.get("done"):
+                                self.logger.info(f"Full response received: {full_response}")
+                                if thread_id:
+                                    self._add_to_memory(thread_id, query, full_response)
+                                break
+                        except json.JSONDecodeError as e:
+                            self.logger.error(f"Error decoding JSON chunk: {e}")
+                            continue
 
-        except requests.exceptions.RequestException as e:
-            self.logger.error(f"Error communicating with Ollama API: {e}")
-            yield "Sorry, I'm having trouble connecting to the Ollama server."
+        except httpx.RequestError as e:
+            self.logger.error(f"Network error communicating with Ollama API: {e}")
+            yield "Check if Ollama is running at the configured URL."
         except Exception as e:
             self.logger.error(f"Unexpected error in stream_chat_completion: {e}")
             yield "An unexpected error occurred. Please try again later."
 
-    def chat_completion(
+    async def chat_completion(
         self, 
         query: str, 
         system_prompt: Optional[str] = None, 
         thread_id: Optional[str] = None
     ) -> str:
         """
-        Returns a single string with the full chat completion.
+        Asynchronously returns the full chat completion string.
         """
         response_text = ""
-        for token in self.stream_chat_completion(query, system_prompt, thread_id):
-            # Avoid accumulating error messages into the final response if possible
-            if "trouble connecting" in token or "unexpected error" in token:
-                # If we've already got some response, ignore the error token
-                if response_text: continue
-                return token
+        async for token in self.stream_chat_completion(query, system_prompt, thread_id):
+            # Simplistic error check for the UI
+            if "running at" in token or "unexpected error" in token:
+                if not response_text: return token
             response_text += token
         return response_text
 
@@ -100,5 +91,5 @@ class ChatService:
         Placeholder for memory/history management.
         """
         self.logger.debug(f"Adding interaction to memory for thread: {thread_id}")
-        # Implementation will depend on how history is stored (e.g., redis, sqlite, memory)
+        # Add your persistent storage logic here
         pass
