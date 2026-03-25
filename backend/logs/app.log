@@ -66,3 +66,13 @@
 2026-03-20 04:53:00 | INFO     | knowledge.store | 💾 Message stored: role=user, length=3
 2026-03-20 04:53:00 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): sdf
 2026-03-20 04:53:06 | INFO     | knowledge.store | 💾 Message stored: role=assistant, length=282
+2026-03-20 15:48:59 | INFO     | app | Starting JARVIS CLI...
+2026-03-20 15:48:59 | DEBUG    | knowledge.store | ChatSession initialized with 254 chars of system prompt.
+2026-03-20 15:48:59 | INFO     | agents.chatagent | Agent 'ChatAgent' initialized.
+2026-03-20 15:49:52 | INFO     | app | Keyboard interrupt received.
+2026-03-20 18:38:18 | INFO     | app | Starting JARVIS CLI...
+2026-03-20 18:38:18 | DEBUG    | knowledge.store | ChatSession initialized with 254 chars of system prompt.
+2026-03-20 18:38:18 | INFO     | agents.chatagent | Agent 'ChatAgent' initialized.
+2026-03-20 18:38:22 | INFO     | knowledge.store | 💾 Message stored: role=user, length=6
+2026-03-20 18:38:22 | DEBUG    | core.chat | Sending request to Ollama (llama3:8b): dsfsdf
+2026-03-20 18:38:43 | INFO     | knowledge.store | 💾 Message stored: role=assistant, length=300
