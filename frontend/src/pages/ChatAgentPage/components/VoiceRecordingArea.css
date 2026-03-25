@@ -1,0 +1,134 @@
+.recording-mode {
+    padding: 12px 24px;
+    background: var(--chat-input-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    border-radius: 20px;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.recording-header {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    text-align: center;
+}
+
+.recording-body {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancel-pill {
+    padding: 8px 30px;
+    background: var(--icon-btn-hover);
+    border: none;
+    border-radius: 99px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel-pill:hover {
+    background: #f1f3f4;
+    color: var(--text-primary);
+}
+
+.timer-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.red-dot {
+    width: 10px;
+    height: 10px;
+    background: #ff3b30;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 59, 48, 0.6);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.timer-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: monospace;
+}
+
+.recording-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-btn-round-light {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.icon-btn-round-light:hover {
+    background: var(--icon-btn-hover);
+}
+
+.confirm-btn-blue {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #4a5dff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(74, 93, 255, 0.4);
+    transition: all 0.2s;
+}
+
+.confirm-btn-blue:hover {
+    transform: scale(1.05);
+    background: #3a4dfc;
+}

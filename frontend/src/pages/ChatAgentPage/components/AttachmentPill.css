@@ -1,0 +1,78 @@
+.attachment-pill {
+    display: flex;
+    align-items: center;
+    background: var(--card-hover-bg);
+    padding: 6px 14px;
+    border-radius: var(--radius-md);
+    gap: 10px;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: pillPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pillPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.attachment-pill:hover {
+    background: var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.attachment-icon-c {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attachment-icon-c.audio { color: var(--blue-accent); }
+.attachment-icon-c.image { color: var(--green-accent); }
+.attachment-icon-c.file { color: var(--gray-accent); }
+
+.attachment-name {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attachment-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 4px;
+}
+
+.attach-action-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: var(--chat-input-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.attach-action-btn:hover {
+    color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.attach-action-btn.remove-btn:hover {
+    color: #ff3b30;
+    background: #fffafa;
+}
+
+/* Dark mode override for remove button hover */
+[data-theme='dark'] .attach-action-btn.remove-btn:hover {
+    background: #2a1a1a;
+}

@@ -27,6 +27,9 @@
   --modal-bg: rgba(255, 255, 255, 0.8);
   --accent-bg: #fff8f5;
   --accent-border: #ffd8c2;
+  --blue-accent: #4a5dff;
+  --green-accent: #34a853;
+  --gray-accent: #5f6368;
 }
 
 [data-theme='dark'] {
@@ -49,6 +52,9 @@
   --modal-bg: rgba(0, 0, 0, 0.8);
   --accent-bg: #2a1a10;
   --accent-border: #4a2a1a;
+  --blue-accent: #7080ff;
+  --green-accent: #40c463;
+  --gray-accent: #999999;
 }
 
 * {
