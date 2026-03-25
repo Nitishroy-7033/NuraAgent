@@ -163,6 +163,24 @@
     transform: translateX(-50%) translateY(0);
 }
 
+.icon-action.selected {
+    background: var(--primary-orange);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 124, 51, 0.3);
+}
+
+.deeper-research-btn.selected {
+    background: var(--primary-orange);
+    color: white;
+    border-color: var(--primary-orange);
+    box-shadow: 0 4px 12px rgba(255, 124, 51, 0.3);
+}
+
+.icon-action.selected svg,
+.deeper-research-btn.selected svg {
+    color: white;
+}
+
 .icon-action {
     width: 38px;
     height: 38px;
@@ -171,7 +189,7 @@
     justify-content: center;
     color: var(--text-secondary);
     border-radius: 50%;
-    transition: background 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .icon-action:hover {

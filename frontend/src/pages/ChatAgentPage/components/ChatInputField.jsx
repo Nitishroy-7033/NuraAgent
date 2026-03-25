@@ -3,7 +3,7 @@ import './ChatInputField.css';
 import VoiceRecordingArea from './VoiceRecordingArea';
 import AttachmentPill from './AttachmentPill';
 
-function ChatInputField({ 
+const ChatInputField = React.forwardRef(({ 
   onSendMessage, 
   loading, 
   placeholder = "Ask me anything...",
@@ -11,8 +11,9 @@ function ChatInputField({
   showPromo: initialShowPromo = true,
   promoConfig = null,
   enableMic = true,
+  multiSelectTools = true,
   onRecordingComplete = (data) => console.log('Recording complete:', data)
-}) {
+}, ref) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -21,6 +22,24 @@ function ChatInputField({
   const [isRecording, setIsRecording] = useState(false);
   const [attachments, setAttachments] = useState([]);
   const [playingAudioId, setPlayingAudioId] = useState(null);
+  const [selectedTools, setSelectedTools] = useState([]);
+
+  // Expose methods to parent
+  React.useImperativeHandle(ref, () => ({
+    setMessage: (text) => setMessage(text),
+    triggerSend: (text) => {
+        if (text) {
+          onSendMessage({
+              text: text.trim(),
+              attachments: [],
+              selectedTools: []
+          });
+          setMessage('');
+          setAttachments([]);
+          setSelectedTools([]);
+        }
+    }
+  }));
 
   useEffect(() => {
     if (textareaRef.current && !isRecording) {
@@ -34,11 +53,13 @@ function ChatInputField({
       if (onSendMessage) {
         onSendMessage({
             text: message.trim(),
-            attachments: attachments
+            attachments: attachments,
+            selectedTools: selectedTools
         });
       }
       setMessage('');
       setAttachments([]);
+      setSelectedTools([]);
     }
   };
 
@@ -112,6 +133,18 @@ function ChatInputField({
 
   // Handle specific tool clicks
   const handleActionClick = (action) => {
+    if (action.selectable) {
+        setSelectedTools(prev => {
+            if (multiSelectTools) {
+                return prev.includes(action.label) 
+                    ? prev.filter(l => l !== action.label) 
+                    : [...prev, action.label];
+            } else {
+                return prev.includes(action.label) ? [] : [action.label];
+            }
+        });
+    }
+
     if (action.label === 'Voice Input') {
       startRecording();
     } else if (action.label === 'Upload Image' || action.label === 'Attach Files') {
@@ -129,6 +162,23 @@ function ChatInputField({
       />
     );
   }
+
+  const renderActionButton = (action, idx) => {
+     const isSelected = selectedTools.includes(action.label);
+     const baseClass = action.className || 'icon-action';
+     
+     return (
+        <button 
+          key={idx} 
+          className={`${baseClass} ${isSelected ? 'selected' : ''}`} 
+          onClick={() => handleActionClick(action)}
+          data-tooltip={action.label}
+        >
+          {action.icon}
+          {action.label && action.className === 'deeper-research-btn' && <span>{action.label}</span>}
+        </button>
+     );
+  };
 
   return (
     <div className={`chat-input-box ${showPromo && promoConfig ? 'promo-visible' : 'promo-hidden'}`}>
@@ -178,31 +228,11 @@ function ChatInputField({
 
       <div className="chat-input-actions">
         <div className="left-actions">
-          {leftActions.map((action, idx) => (
-            <button 
-              key={idx} 
-              className={action.className || 'icon-action'} 
-              onClick={() => handleActionClick(action)}
-              data-tooltip={action.label}
-            >
-              {action.icon}
-              {action.label && action.className === 'deeper-research-btn' && <span>{action.label}</span>}
-            </button>
-          ))}
+          {leftActions.map((action, idx) => renderActionButton(action, idx))}
         </div>
 
         <div className="right-actions">
-          {rightActions.map((action, idx) => (
-            <button 
-              key={idx} 
-              className={action.className || 'icon-action'} 
-              onClick={() => handleActionClick(action)}
-              data-tooltip={action.label}
-            >
-              {action.icon}
-              {action.label && action.className === 'deeper-research-btn' && <span>{action.label}</span>}
-            </button>
-          ))}
+          {rightActions.map((action, idx) => renderActionButton(action, idx))}
           
           <button 
             className="send-btn-orange" 
@@ -232,6 +262,6 @@ function ChatInputField({
       )}
     </div>
   );
-}
+});
 
 export default ChatInputField;

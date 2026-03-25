@@ -10,6 +10,18 @@ const ChatMainArea = ({
     loading = false,
     promoConfig = null
 }) => {
+    const inputRef = React.useRef(null);
+
+    const handleSuggestionClick = (s) => {
+        if (inputRef.current) {
+            inputRef.current.setMessage(s);
+            // Submit with small delay so the user sees it in the box
+            setTimeout(() => {
+                inputRef.current.triggerSend(s);
+            }, 500);
+        }
+    };
+
     return (
         <main className="chat-main">
             <div className="chat-content">
@@ -24,12 +36,13 @@ const ChatMainArea = ({
                             <span className="suggestion-label">Suggested questions:</span>
                             <div className="suggestion-pills">
                                 {suggestions.map((s, idx) => (
-                                    <button key={idx} className="suggestion-pill" onClick={() => onSendMessage(s)}>{s}</button>
+                                    <button key={idx} className="suggestion-pill" onClick={() => handleSuggestionClick(s)}>{s}</button>
                                 ))}
                             </div>
                         </div>
                     )}
                     <ChatInputField 
+                        ref={inputRef}
                         onSendMessage={onSendMessage} 
                         loading={loading}
                         actions={tools}
@@ -39,7 +52,7 @@ const ChatMainArea = ({
 
                 <div className="quick-actions">
                     {quickActions.map((action, idx) => (
-                        <div key={idx} className="action-card" onClick={() => onSendMessage(action.title)}>
+                        <div key={idx} className="action-card" onClick={() => handleSuggestionClick(action.title)}>
                             <div className="action-icon">{action.icon}</div>
                             <div className="action-text">
                                 <h3>{action.title}</h3>
