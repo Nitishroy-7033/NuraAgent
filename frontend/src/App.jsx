@@ -9,7 +9,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={
-        <Box className="app-container">
+        <Box className="welcome-container">
           <h1>Welcome to NuraAgent</h1>
           <p>Your AI assistant for seamless interactions.</p>
           <Button color="primary" onClick={() => navigate('/chat')}>Get Started</Button>

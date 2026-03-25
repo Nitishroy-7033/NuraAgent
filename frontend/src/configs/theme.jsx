@@ -7,7 +7,7 @@ const myTheme = {
       primaryColor: "#ef4444", // Your brand purple
       lightPrimaryColor: "#f5f3ff", // Soft tint of primary
       background: "#ffffff",
-      primaryContainercolor: "#ffffff",
+      primaryContainercolor: "#ebebeb",
       secondaryContainercolor: "#faf5ff",
       textColor: "#1e1b4b",
       textSecondaryColor: "#4338ca",
