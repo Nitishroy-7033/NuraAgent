@@ -203,6 +203,292 @@
   gap: 12px;
 }
 
+/* Assistant Message Specific Layout */
+.chatkit-message.agent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chatkit-thought-block {
+    margin-bottom: 4px;
+}
+
+.chatkit-thought-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--chatkit-text-secondary);
+    transition: all 0.2s;
+    width: fit-content;
+}
+
+.chatkit-thought-header:hover {
+    color: var(--chatkit-text);
+}
+
+.chatkit-thought-header svg {
+    flex-shrink: 0;
+}
+
+.chatkit-thought-content {
+    padding: 12px 0 16px 28px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--chatkit-text-secondary);
+}
+
+.chatkit-tool-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.chatkit-tool-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--chatkit-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.chatkit-tool-calls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chatkit-tool-card {
+    background: var(--chatkit-border);
+    border: 1px solid var(--chatkit-glass-border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.chatkit-tool-card.expanded {
+    background: var(--chatkit-bg);
+    border-color: var(--chatkit-primary);
+}
+
+.chatkit-tool-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.chatkit-tool-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.chatkit-tool-icon-wrapper {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--chatkit-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.chatkit-tool-name {
+    font-weight: 600;
+    color: var(--chatkit-text);
+}
+
+.chatkit-tool-status-pill {
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.chatkit-tool-body {
+    padding: 0 12px 12px 12px;
+    border-top: 1px solid var(--chatkit-border);
+    background: rgba(0,0,0,0.02);
+}
+
+.chatkit-tool-section {
+    margin-top: 12px;
+}
+
+.chatkit-tool-section label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--chatkit-text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.chatkit-tool-code {
+    background: #1e1e1e;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    margin: 0;
+}
+
+.chatkit-tool-code .key { color: #66d9ef; }
+.chatkit-tool-code .string { color: #e6db74; }
+.chatkit-tool-code .number { color: #ae81ff; }
+
+.chatkit-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--chatkit-text-secondary);
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.chatkit-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px dashed var(--chatkit-text-secondary);
+    border-radius: 50%;
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate { to { transform: rotate(360deg); } }
+
+/* Resource Results Section */
+.chatkit-resources-section {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--chatkit-border);
+}
+
+.chatkit-results-header {
+    font-size: 12px;
+    color: var(--chatkit-text-secondary);
+    margin-bottom: 12px;
+}
+
+.chatkit-resource-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chatkit-resource-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+    color: var(--chatkit-text);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.chatkit-resource-item:hover {
+    color: var(--chatkit-primary);
+    transform: translateX(4px);
+}
+
+.chatkit-resource-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--chatkit-text-secondary);
+    background: var(--chatkit-border);
+    border-radius: 6px;
+}
+
+.chatkit-message-markdown {
+    line-height: 1.6;
+}
+
+.chatkit-message-markdown p {
+    margin-bottom: 8px;
+}
+
+.chatkit-message-markdown p:last-child {
+    margin-bottom: 0;
+}
+
+.chatkit-message-markdown h1,
+.chatkit-message-markdown h2,
+.chatkit-message-markdown h3 {
+    margin: 20px 0 12px 0;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.chatkit-message-markdown ul, 
+.chatkit-message-markdown ol {
+    padding-left: 20px;
+    margin-bottom: 16px;
+}
+
+.chatkit-message-markdown li {
+    margin-bottom: 8px;
+}
+
+.chatkit-message-markdown pre {
+    background: #1e1e1e;
+    color: #f8f8f2;
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-size: 12px;
+}
+
+.chatkit-message-markdown code {
+    background: rgba(0,0,0,0.1);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.chatkit-message-markdown table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 12px;
+    border: 1px solid var(--chatkit-border);
+}
+
+.chatkit-message-markdown th,
+.chatkit-message-markdown td {
+    border: 1px solid var(--chatkit-border);
+    padding: 8px;
+    text-align: left;
+}
+
+.chatkit-message-markdown th {
+    background: var(--chatkit-border);
+}
+
 .chatkit-header-info h3 {
   margin: 0;
   font-size: 16px;
