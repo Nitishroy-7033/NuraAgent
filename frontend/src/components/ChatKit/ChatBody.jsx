@@ -14,13 +14,38 @@ const ChatKitToolCard = ({ tool }) => {
 
   const currentStatus = statusColors[status.toLowerCase()] || statusColors.completed;
 
+  const renderInput = (data) => {
+    if (typeof data !== 'object') return <span className="string">{data}</span>;
+    return Object.entries(data).map(([k, v]) => (
+      <div key={k}>
+        <span className="key">{k}:</span> <span className="string">{String(v)}</span>
+      </div>
+    ));
+  };
+
+  const renderOutput = (data) => {
+    if (typeof data !== 'object') return <span className="string">"{data}"</span>;
+    return (
+      <>
+        <span className="bracket">{'{'}</span>
+        {Object.entries(data).map(([k, v], i, arr) => (
+          <div key={k} style={{ paddingLeft: '20px' }}>
+            <span className="key">"{k}"</span>: <span className="string">"{String(v)}"</span>
+            {i < arr.length - 1 && <span className="bracket">,</span>}
+          </div>
+        ))}
+        <span className="bracket">{'}'}</span>
+      </>
+    );
+  };
+
   return (
     <div className={`chatkit-tool-card ${expanded ? 'expanded' : ''}`}>
       <div className="chatkit-tool-header" onClick={() => setExpanded(!expanded)}>
         <div className="chatkit-tool-info">
           <div className="chatkit-tool-icon-wrapper">
              {icon || (
-               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
              )}
           </div>
           <span className="chatkit-tool-name">{name}</span>
@@ -40,21 +65,17 @@ const ChatKitToolCard = ({ tool }) => {
         <div className="chatkit-tool-body">
           {input && (
             <div className="chatkit-tool-section">
-              <label>Input Arguments</label>
-              <pre className="chatkit-tool-code">
-                {typeof input === 'object' ? 
-                  Object.entries(input).map(([k, v]) => (
-                    <div key={k}><span className="key">{k}</span>: <span className="string">"{v}"</span></div>
-                  )) : input
-                }
+              <label>INPUT</label>
+              <pre className="chatkit-tool-code input-mode">
+                {renderInput(input)}
               </pre>
             </div>
           )}
           {output && (
             <div className="chatkit-tool-section">
-              <label>Output Result</label>
+              <label>OUTPUT</label>
               <pre className="chatkit-tool-code">
-                <span className="string">{JSON.stringify(output, null, 2)}</span>
+                {renderOutput(output)}
               </pre>
             </div>
           )}
