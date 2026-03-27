@@ -448,6 +448,26 @@
 
 .chatkit-message-markdown {
     line-height: 1.6;
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Custom Thin Scrollbar for Markdown Content (Tables) */
+.chatkit-message-markdown::-webkit-scrollbar {
+    height: 4px;
+}
+
+.chatkit-message-markdown::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chatkit-message-markdown::-webkit-scrollbar-thumb {
+    background: var(--chatkit-border);
+    border-radius: 10px;
+}
+
+.chatkit-message-markdown::-webkit-scrollbar-thumb:hover {
+    background: var(--chatkit-primary);
 }
 
 .chatkit-message-markdown p {
@@ -499,21 +519,45 @@
 
 .chatkit-message-markdown table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 12px 0;
-    font-size: 12px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0;
+    font-size: 13px;
     border: 1px solid var(--chatkit-border);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .chatkit-message-markdown th,
 .chatkit-message-markdown td {
-    border: 1px solid var(--chatkit-border);
-    padding: 8px;
+    padding: 8px 12px;
     text-align: left;
+    border-bottom: 1px solid var(--chatkit-border);
+    border-right: 1px solid var(--chatkit-border);
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.chatkit-message-markdown th:last-child,
+.chatkit-message-markdown td:last-child {
+    border-right: none;
+}
+
+.chatkit-message-markdown tr:last-child td {
+    border-bottom: none;
 }
 
 .chatkit-message-markdown th {
     background: var(--chatkit-border);
+    font-weight: 700;
+    color: var(--chatkit-text);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.chatkit-message-markdown tr:hover td {
+    background: rgba(var(--primary-orange-rgb, 255, 124, 51), 0.05);
 }
 
 .chatkit-header-info h3 {

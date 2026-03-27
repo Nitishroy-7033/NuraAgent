@@ -104,6 +104,20 @@ resources:
 
 Is there anything else you want to configure?`;
         resources = [{ title: "Deployment Cluster Config", type: "file" }];
+      } else if (lowerContent.includes("table") || lowerContent.includes("data")) {
+        responseContent = `Here is a high-density resource report across all global sectors:
+
+### Global Infrastructure Metrics
+
+| Node ID | Status | CPU | Memory | Region | Uptime | Network | Latency | Load | Storage | Capacity |
+|:---|:---:|:---:|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **node-us-01** | ✅ Active | 42% | 1.2GB | US-East | 99.9% | 1.5GB/s | 2ms | Low | 850GB | 1TB |
+| **node-eu-02** | ⚠️ Warning | 88% | 3.8GB | EU-West | 98.2% | 0.8GB/s | 45ms | High | 1.9TB | 2TB |
+| **node-as-03** | ✅ Active | 15% | 0.8GB | AS-South | 100% | 2.1GB/s | 12ms | Low | 240GB | 500GB |
+| **node-br-04** | 💤 Standby | 0% | 0.2GB | SA-East | 95.5% | 0.1GB/s | 120ms | Idle | 10GB | 100GB |
+
+The table above is ultra-wide to test your horizontal scrolling experience.`;
+        resources = [{ title: "Full Node Report.csv", type: "file" }];
       }
 
       // Update the message with final content
