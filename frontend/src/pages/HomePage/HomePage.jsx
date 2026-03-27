@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
+import ChatKit from '../../components/ChatKit/ChatKit';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -10,6 +11,11 @@ const HomePage = () => {
         { icon: "🛠️", title: "Multi-Tool Support", desc: "Connect databases, APIs, and file systems." },
         { icon: "🎤", title: "Voice Control", desc: "Interact naturally with voice commands." }
     ];
+
+    const handleSendMessage = async (msg) => {
+        console.log("ChatKit message:", msg);
+        // Integrate with real backend or service here
+    };
 
     return (
         <div className="home-container">
@@ -46,6 +52,17 @@ const HomePage = () => {
 
             <div className="bottom-blob"></div>
             <div className="top-blob"></div>
+
+            {/* Floating Chat Component */}
+            <ChatKit 
+                agentName="Nura Assistant" 
+                onSendMessage={handleSendMessage}
+                suggestions={[
+                    "How do I use this?",
+                    "What are the features?",
+                    "Deploy an agent"
+                ]}
+            />
         </div>
     );
 };
