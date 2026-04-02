@@ -5,16 +5,16 @@ from core.chat.chat_service import ChatService
 from core.config import config
 from cli.ui import print_header
 
-def start_chat(streaming=True, thread_id="cli_session", system_prompt=None):
+def start_chat(streaming=True, thread_id="cli_session"):
     """
     Synchronous bridge as CLI's main entry point, but runs the async chat loop inside.
     """
     try:
-        asyncio.run(_async_chat_loop(streaming, thread_id, system_prompt))
+        asyncio.run(_async_chat_loop(streaming, thread_id))
     except KeyboardInterrupt:
         print(Fore.YELLOW + "\nExiting chat session...")
 
-async def _async_chat_loop(streaming, thread_id, system_prompt):
+async def _async_chat_loop(streaming, thread_id):
     """
     Asynchronous chat loop handler.
     """
@@ -46,16 +46,14 @@ async def _async_chat_loop(streaming, thread_id, system_prompt):
             
             if streaming:
                 async for token in chat_service.stream_chat_completion(
-                    user_input, 
-                    system_prompt=system_prompt, 
+                    user_input,
                     thread_id=thread_id
                 ):
                     print(token, end="", flush=True)
                 print("\n")
             else:
                 response = await chat_service.chat_completion(
-                    user_input, 
-                    system_prompt=system_prompt, 
+                    user_input,
                     thread_id=thread_id
                 )
                 print(response + "\n")

@@ -1,111 +1,109 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatMainArea from './components/ChatMainArea';
+import { streamChatCompletion } from './state/chatStreamClient';
 
 function ChatAgentPage() {
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      thinking: "The user wants a detailed project workflow. I need to examine the existing components and database schema to generate a relevant plan.",
-      toolCalls: [
-        { 
-            name: "file_search", 
-            status: "processing", 
-            input: { pattern: "*.tsx", directory: "/components" },
-            statusText: "Processing tool call..."
-        },
-        { 
-            name: "api_call", 
-            status: "ready"
-        },
-        { 
-            name: "database_query", 
-            status: "completed", 
-            input: { table: "users", limit: 10 },
-            output: { count: 42, data: [{ id: 1, name: "John Doe" }, { id: 2, name: "Jane Smith" }] }
-        },
-        { 
-            name: "email_send", 
-            status: "error"
-        }
-      ],
-      status: "Generating project workflow...",
-      text: `### Shaping the AI Chat Experience
-      
-- During the session, the team presented the overall product vision focused on building a modern AI chat experience that feels intuitive and easy to use for end users.
-- Key emphasis was placed on clarity of interaction, reducing cognitive load, and ensuring responses feel helpful, contextual, and trustworthy.
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const activeStreamRef = useRef(null);
 
-### Key Takeaways
-
-1. The experience should scale from onboarding demos to advanced workflows without increasing complexity for the user.
-2. The AI chat should serve as a primary interface for user interaction, prioritizing simplicity and clear intent recognition.
-`,
-      resources: [
-        { title: "Customer Feedback: Aggregated Insights and Key Pain Points", type: "file", preview: "Analyze 500+ feedback entries from Q1..." },
-        { title: "Sales Performance: Pipeline Health and Conversion Metrics", type: "file", preview: "Real-time dashboard showing 15% growth..." },
-        { title: "Product Overview Session", type: "link", preview: "Recording of the March 24th demo call." }
-      ]
-    }
-  ]);
-
-  const handleMessage = (msg) => {
-    // 1. Append User Message
-    const newUserMsg = {
-        role: 'user',
-        text: msg.text || "Voice message / No text",
-        attachments: msg.attachments || [],
-        selectedTools: msg.selectedTools || []
+  useEffect(() => {
+    return () => {
+      if (activeStreamRef.current) {
+        activeStreamRef.current.abort();
+      }
     };
-    
-    setMessages(prev => [...prev, newUserMsg]);
-    
-    // 2. Simulate Multi-stage AI Response
+  }, []);
+
+  const handleMessage = async (msg) => {
+    if (loading) {
+      return;
+    }
+
+    const newUserMsg = {
+      role: 'user',
+      text: msg.text || 'Voice message / No text',
+      attachments: msg.attachments || [],
+      selectedTools: msg.selectedTools || [],
+    };
+
     const assistantMsgId = Date.now();
-    
-    // Initial thinking state
-    setTimeout(() => {
-        setMessages(prev => [...prev, {
-            id: assistantMsgId,
-            role: 'assistant',
-            status: 'Analyzing your request...',
-            thinking: "The user is asking about '" + newUserMsg.text + "'. I need to provide a helpful response following the Nura interface standards."
-        }]);
 
-        // Second state: Tool Call
-        setTimeout(() => {
-            setMessages(prev => prev.map(m => m.id === assistantMsgId ? {
-                ...m,
-                status: 'Searching internal knowledge...',
-                toolCalls: [{ name: "Knowledge Base", status: "done" }]
-            } : m));
+    setMessages((prev) => [
+      ...prev,
+      newUserMsg,
+      {
+        id: assistantMsgId,
+        role: 'assistant',
+        status: 'JARVIS is responding...',
+        text: '',
+      },
+    ]);
 
-            // Final state: Complete Response
-            setTimeout(() => {
-                setMessages(prev => prev.map(m => m.id === assistantMsgId ? {
+    if (activeStreamRef.current) {
+      activeStreamRef.current.abort();
+    }
+
+    const controller = new AbortController();
+    activeStreamRef.current = controller;
+    setLoading(true);
+
+    try {
+      await streamChatCompletion({
+        query: newUserMsg.text,
+        signal: controller.signal,
+        onToken: (token) => {
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantMsgId
+                ? { ...m, text: `${m.text || ''}${token}` }
+                : m
+            )
+          );
+        },
+        onDone: () => {
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantMsgId ? { ...m, status: null } : m
+            )
+          );
+        },
+        onError: (error) => {
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantMsgId
+                ? {
                     ...m,
                     status: null,
-                    text: `### Response to: "${newUserMsg.text}"
-                    
-Based on my search, here is the information you requested. Nura AI is designed to help you streamline your complex workflows with ease.
-
-- **Automated**: Handles repetitive tasks automatically.
-- **Intelligent**: Understands context and deep research.
-- **Modular**: Fully extensible components.
-
-| Feature | Status |
-| :--- | :--- |
-| Core Engine | Online |
-| Memory Layer | Active |
-| Tool Integration | Ready |
-`,
-                    resources: [
-                        { title: "Nura Protocol Documentation v2", type: "file", preview: "Complete guide to the Nura engine architecture." },
-                        { title: "Dashboard Implementation Specs", type: "link", preview: "The latest Figma designs and CSS token maps." }
-                    ]
-                } : m));
-            }, 2000);
-        }, 1500);
-    }, 500);
+                    text: m.text
+                      ? `${m.text}\n\nJARVIS error: ${error}`
+                      : `JARVIS error: ${error}`,
+                  }
+                : m
+            )
+          );
+        },
+      });
+    } catch (error) {
+      if (error?.name !== 'AbortError') {
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantMsgId
+              ? {
+                  ...m,
+                  status: null,
+                  text: m.text
+                    ? `${m.text}\n\nJARVIS error: Unable to connect to the stream.`
+                    : 'JARVIS error: Unable to connect to the stream.',
+                }
+              : m
+          )
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const quickActions = [
@@ -154,6 +152,7 @@ Based on my search, here is the information you requested. Nura AI is designed t
       <ChatMainArea
         messages={messages}
         onSendMessage={handleMessage}
+        loading={loading}
         suggestions={[
           "Analyze the latest market trends",
           "Explain quantum computing simply",

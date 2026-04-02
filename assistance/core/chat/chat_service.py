@@ -1,3 +1,4 @@
+from utils.prompts import NURA_SYSTEM_PROMPT
 import httpx
 import json
 from typing import AsyncGenerator, List, Dict, Optional
@@ -14,7 +15,6 @@ class ChatService:
     async def stream_chat_completion(
         self, 
         query: str, 
-        system_prompt: Optional[str] = None, 
         thread_id: Optional[str] = None
     ) -> AsyncGenerator[str, None]:
         """
@@ -23,7 +23,7 @@ class ChatService:
         self.logger.info(f"Query sending to Ollama API: {query}")
         
         messages = [
-            {"role": "system", "content": system_prompt or "You are a helpful assistant."},
+            {"role": "system", "content": NURA_SYSTEM_PROMPT},
             {"role": "user", "content": query}
         ]
 
@@ -33,7 +33,13 @@ class ChatService:
             "stream": True
         }
 
+        if not self.config.ollama_base_url:
+            self.logger.error("Ollama base URL is not configured.")
+            yield "JARVIS backend error: Ollama base URL is not configured."
+            return
+
         url = f"{self.config.ollama_base_url}/api/chat"
+        self.logger.debug(f"Ollama request URL: {url} | model: {self.config.ollama_model}")
 
         try:
             async with httpx.AsyncClient(timeout=120.0) as client:
@@ -65,24 +71,36 @@ class ChatService:
         except httpx.RequestError as e:
             self.logger.error(f"Network error communicating with Ollama API: {e}")
             yield "Check if Ollama is running at the configured URL."
+        except FileNotFoundError as e:
+            self.logger.error(
+                f"Ollama connection failed (file not found): {type(e).__name__} - {e}"
+            )
+            yield "JARVIS backend error: Ollama endpoint not reachable."
+        except OSError as e:
+            self.logger.error(
+                f"Ollama connection OS error: {type(e).__name__} - {e}"
+            )
+            yield "JARVIS backend error: Ollama connection failed."
         except Exception as e:
-            self.logger.error(f"Unexpected error in stream_chat_completion: {e}")
+            self.logger.exception(
+                f"Unexpected error in stream_chat_completion: {type(e).__name__} - {e}"
+            )
             yield "An unexpected error occurred. Please try again later."
 
     async def chat_completion(
         self, 
         query: str, 
-        system_prompt: Optional[str] = None, 
         thread_id: Optional[str] = None
     ) -> str:
-        """
-        Asynchronously returns the full chat completion string.
-        """
         response_text = ""
-        async for token in self.stream_chat_completion(query, system_prompt, thread_id):
+        async for token in self.stream_chat_completion(
+            query,
+            thread_id=thread_id,
+        ):
             # Simplistic error check for the UI
             if "running at" in token or "unexpected error" in token:
-                if not response_text: return token
+                if not response_text:
+                    return token
             response_text += token
         return response_text
 

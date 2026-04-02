@@ -26,7 +26,6 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     query: str
-    system_prompt: Optional[str] = None
     thread_id: Optional[str] = None
 
 @app.get("/health")
@@ -46,7 +45,6 @@ async def chat_stream(request: ChatRequest):
         try:
             async for chunk in chat_service.stream_chat_completion(
                 request.query, 
-                request.system_prompt, 
                 request.thread_id
             ):
                 await asyncio.sleep(0.01)
@@ -65,7 +63,6 @@ async def chat_completion(request: ChatRequest):
     try:
         response_text = await chat_service.chat_completion(
             request.query, 
-            request.system_prompt, 
             request.thread_id
         )
         return {"response": response_text}
