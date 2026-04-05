@@ -1,23 +1,154 @@
-from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-@dataclass
-class Config:
-    # Ollama settings
-    ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "llama3:8b"  # change to your model
+class OllamaSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="OLLAMA_", extra="ignore")
+    base_url: str = "http://localhost:11434"
+    chat_model: str = "llama3.1:8b"
+    reasoning_model: str = "phi3:medium"
+    embed_model: str = "nomic-embed-text"
+    temperature: float = 0.7
+    num_ctx: int = 8192
 
-    # Chat settings
-    max_history: int = 20  # max messages to keep in context
-    stream: bool = True
 
-    # App settings
+class MongoSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="MONGO_", extra="ignore")
+    uri: str = "mongodb://localhost:27017"
+    db_name: str = "nura"
+
+
+class RedisSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="REDIS_", extra="ignore")
+    url: str = "redis://localhost:6379"
+
+
+class ChromaSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="CHROMA_", extra="ignore")
+    persist_dir: str = "./data/chroma"
+    collection_knowledge: str = "nura_knowledge"
+    collection_conversations: str = "nura_conversations"
+
+
+class NuraSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="NURA_", extra="ignore")
+    user_id: str = "nitish"
+    user_name: str = "Nitish"
     app_name: str = "JARVIS"
-    debug: bool = True
-
-    # Logging settings
-    log_level: str = "DEBUG"
-    log_file: str = "logs/app.log"
+    log_level: str = "INFO"
+    env: str = "development"
 
 
-config = Config()
+class APISettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="API_", extra="ignore")
+    host: str = "0.0.0.0"
+    port: int = 8000
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+    ollama: OllamaSettings = Field(default_factory=OllamaSettings)
+    mongo: MongoSettings = Field(default_factory=MongoSettings)
+    redis: RedisSettings = Field(default_factory=RedisSettings)
+    chroma: ChromaSettings = Field(default_factory=ChromaSettings)
+    nura: NuraSettings = Field(default_factory=NuraSettings)
+    api: APISettings = Field(default_factory=APISettings)
+
+    def model_post_init(self, __context):
+        Path(self.chroma.persist_dir).mkdir(parents=True, exist_ok=True)
+        Path("./data/uploads").mkdir(parents=True, exist_ok=True)
+        Path("./logs").mkdir(parents=True, exist_ok=True)
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
+
+
+settings = get_settings()
+
+
+class ConfigProxy:
+    """
+    Backwards-compatible adapter for older modules that expect flat config fields.
+    Prefer using `settings` for new code.
+    """
+
+    def __init__(self, cfg: Settings):
+        self._cfg = cfg
+
+    # Nested settings
+    @property
+    def ollama(self) -> OllamaSettings:
+        return self._cfg.ollama
+
+    @property
+    def mongo(self) -> MongoSettings:
+        return self._cfg.mongo
+
+    @property
+    def redis(self) -> RedisSettings:
+        return self._cfg.redis
+
+    @property
+    def chroma(self) -> ChromaSettings:
+        return self._cfg.chroma
+
+    @property
+    def api(self) -> APISettings:
+        return self._cfg.api
+
+    @property
+    def nura(self) -> NuraSettings:
+        return self._cfg.nura
+
+    # Flat compatibility fields
+    @property
+    def ollama_base_url(self) -> str:
+        return self._cfg.ollama.base_url
+
+    @property
+    def ollama_model(self) -> str:
+        return self._cfg.ollama.chat_model
+
+    @property
+    def api_host(self) -> str:
+        return self._cfg.api.host
+
+    @property
+    def api_port(self) -> int:
+        return self._cfg.api.port
+
+    @property
+    def log_level(self) -> str:
+        return self._cfg.nura.log_level
+
+    @property
+    def env(self) -> str:
+        return self._cfg.nura.env
+
+    @property
+    def user_id(self) -> str:
+        return self._cfg.nura.user_id
+
+    @property
+    def user_name(self) -> str:
+        return self._cfg.nura.user_name
+
+    @property
+    def app_name(self) -> str:
+        return self._cfg.nura.app_name
+
+    def __getattr__(self, name: str):
+        # Fallback to underlying Settings for any other attribute access
+        return getattr(self._cfg, name)
+
+
+# Backwards-compatible alias used across the codebase
+config = ConfigProxy(settings)
