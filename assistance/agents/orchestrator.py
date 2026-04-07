@@ -34,6 +34,7 @@ from utils.prompts import (
     REASONING_AGENT_PROMPT,
     NURA_IDENTITY,
 )
+from agents.reasoning_agent import build_reasoning_agent
 
 logger = get_logger("orchestrator")
 
@@ -260,7 +261,7 @@ def _build_graph():
     graph.add_node("context_loader",      context_loader_node)
     graph.add_node("intent_router",       intent_router_node)
     graph.add_node("chat_agent",          _build_chat_agent())
-    graph.add_node("reasoning_agent",     _build_reasoning_agent())
+    graph.add_node("reasoning_agent",     build_reasoning_agent())
     graph.add_node("knowledge_agent",     _build_knowledge_agent())
     graph.add_node("entertainment_agent", _build_stub_agent("entertainment_agent"))
     graph.add_node("realtime_agent",      _build_stub_agent("realtime_agent"))

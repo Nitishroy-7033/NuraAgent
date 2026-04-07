@@ -1,12 +1,4 @@
-#!/usr/bin/env python3
-"""
-main.py — Nura entry point
 
-Usage:
-  python main.py          →  starts API server (default)
-  python main.py api      →  starts API server
-  python main.py cli      →  starts CLI
-"""
 import sys
 from pathlib import Path
 

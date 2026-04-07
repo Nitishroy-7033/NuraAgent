@@ -8,7 +8,7 @@ class OllamaSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="OLLAMA_", extra="ignore")
     base_url: str = "http://localhost:11434"
     chat_model: str = "llama3.1:8b"
-    reasoning_model: str = "phi3:medium"
+    reasoning_model: str = "deepseek-r1:8b"
     embed_model: str = "nomic-embed-text"
     temperature: float = 0.7
     num_ctx: int = 8192

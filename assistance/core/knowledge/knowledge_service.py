@@ -21,6 +21,43 @@ from utils.prompts import KNOWLEDGE_EXTRACT_PROMPT, KNOWLEDGE_QUERY_REWRITE_PROM
 logger = get_logger("knowledge_service")
 
 
+
+def _extract_json(text: str) -> dict | None:
+    """
+    Robustly extract a JSON object from LLM output.
+    Handles: extra prose, markdown fences, partial wrapping.
+    """
+    import re as _re
+    # Try 1: direct parse
+    try:
+        return json.loads(text)
+    except Exception:
+        pass
+
+    # Try 2: strip markdown fences
+    cleaned = text
+    if "```" in cleaned:
+        parts = cleaned.split("```")
+        for part in parts:
+            part = part.strip()
+            if part.startswith("json"):
+                part = part[4:]
+            try:
+                return json.loads(part.strip())
+            except Exception:
+                continue
+
+    # Try 3: find first { ... } block in the text
+    match = _re.search(r'\{.*?\}', text, _re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group())
+        except Exception:
+            pass
+
+    return None
+
+
 class KnowledgeService:
 
     def __init__(self):
@@ -130,14 +167,11 @@ class KnowledgeService:
             response = await llm.ainvoke([HumanMessage(content=prompt)])
             raw = response.content.strip()
 
-            # Strip markdown code fences if model adds them
-            if "```" in raw:
-                raw = raw.split("```")[1]
-                if raw.startswith("json"):
-                    raw = raw[4:]
-            raw = raw.strip()
-
-            extracted = json.loads(raw)
+            # Robust JSON extraction — handles extra text, fences, partial output
+            extracted = _extract_json(raw)
+            if extracted is None:
+                logger.debug("No valid JSON in extraction response, skipping")
+                return
             summary = extracted.get("summary", "")
 
             # Nothing worth storing

@@ -133,7 +133,14 @@
     color: var(--text-primary);
 }
 
+.input-area{
+    /* background-color: black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .input-pnl {
+
     width: 100%;
     max-width: 800px;
     display: flex;

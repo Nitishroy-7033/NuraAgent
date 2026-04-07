@@ -1,24 +1,7 @@
-"""
-api_controller.py — Nura's FastAPI backend
-
-Endpoints:
-  GET  /health
-  POST /chat              standard request/response
-  POST /chat/stream       server-sent events streaming
-  WS   /ws/{session_id}  WebSocket streaming
-
-  POST /knowledge/store
-  POST /knowledge/search
-  GET  /knowledge/all
-  GET  /knowledge/category/{category}
-
-  GET  /sessions
-  GET  /sessions/{session_id}/history
-  GET  /profile
-"""
 import json
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncGenerator
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
@@ -30,7 +13,7 @@ from agents.orchestrator import nura
 from core.config import config
 from core.knowledge.knowledge_service import knowledge_service
 from core.knowledge.mongo_store import mongo_store
-from utils.logger import get_logger
+from utils.logger import LOG_FILE, get_logger
 
 logger = get_logger("api")
 
@@ -39,11 +22,37 @@ logger = get_logger("api")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Nura API starting...")
+    bind_host = config.api_host
+    display_host = "127.0.0.1" if bind_host in ("0.0.0.0", "::") else bind_host
+    base_url = f"http://{display_host}:{config.api_port}"
+    log_path = Path(LOG_FILE).resolve()
+
+    logger.info(
+        f"{config.app_name} API starting...",
+        env=config.env,
+        user=config.user_name,
+    )
+    logger.info("API bound", host=bind_host, port=config.api_port)
+    logger.info(
+        "API URLs",
+        base=base_url,
+        docs=f"{base_url}/docs",
+        redoc=f"{base_url}/redoc",
+        health=f"{base_url}/health",
+    )
+    logger.info(
+        "Models",
+        ollama_base_url=config.ollama.base_url,
+        chat_model=config.ollama.chat_model,
+        reasoning_model=config.ollama.reasoning_model,
+        embed_model=config.ollama.embed_model,
+    )
+    logger.info("Logging to file", path=str(log_path))
+
     await nura.init()
-    logger.info("Nura API ready")
+    logger.info(f"{config.app_name} API ready")
     yield
-    logger.info("Nura API shutting down...")
+    logger.info(f"{config.app_name} API shutting down...")
     await mongo_store.close()
 
 
