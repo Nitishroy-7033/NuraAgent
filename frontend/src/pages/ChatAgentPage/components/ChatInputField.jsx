@@ -222,7 +222,7 @@ const ChatInputField = React.forwardRef(({
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          rows={1}
+          rows={2}
         />
       </div>
 

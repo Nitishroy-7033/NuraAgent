@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatMainArea from './components/ChatMainArea';
-import { streamChatCompletion } from './state/chatStreamClient';
+import { streamChatMessage } from './state/actions';
 
 function ChatAgentPage() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const activeStreamRef = useRef(null);
+
+  const updateAssistantMessage = (assistantMsgId, updater) => {
+    setMessages((prev) =>
+      prev.map((m) => (m.id === assistantMsgId ? updater(m) : m))
+    );
+  };
 
   useEffect(() => {
     return () => {
@@ -36,8 +42,9 @@ function ChatAgentPage() {
       {
         id: assistantMsgId,
         role: 'assistant',
-        status: 'JARVIS is responding...',
+        status: 'Connecting to JARVIS...',
         text: '',
+        thinking: '',
       },
     ]);
 
@@ -50,58 +57,70 @@ function ChatAgentPage() {
     setLoading(true);
 
     try {
-      await streamChatCompletion({
-        query: newUserMsg.text,
+      await streamChatMessage({
+        message: newUserMsg.text,
+        sessionId: null,
         signal: controller.signal,
-        onToken: (token) => {
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === assistantMsgId
-                ? { ...m, text: `${m.text || ''}${token}` }
-                : m
-            )
-          );
+        onEvent: (event) => {
+          if (!event || (event.type !== 'start' && event.type !== 'thinking')) {
+            return;
+          }
+
+          updateAssistantMessage(assistantMsgId, (current) => {
+            const statusText =
+              typeof event.content === 'string' && event.content.trim()
+                ? event.content
+                : 'JARVIS is responding...';
+            const nextThinking =
+              typeof event.content === 'string' && event.content.trim()
+                ? current.thinking
+                  ? `${current.thinking}\n${event.content}`
+                  : event.content
+                : current.thinking;
+
+            return {
+              ...current,
+              status: statusText,
+              thinking: nextThinking,
+            };
+          });
+        },
+        onChunk: (token) => {
+          updateAssistantMessage(assistantMsgId, (current) => ({
+            ...current,
+            text: `${current.text || ''}${token}`,
+          }));
         },
         onDone: () => {
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === assistantMsgId ? { ...m, status: null } : m
-            )
-          );
+          updateAssistantMessage(assistantMsgId, (current) => ({
+            ...current,
+            status: null,
+          }));
         },
         onError: (error) => {
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === assistantMsgId
-                ? {
-                    ...m,
-                    status: null,
-                    text: m.text
-                      ? `${m.text}\n\nJARVIS error: ${error}`
-                      : `JARVIS error: ${error}`,
-                  }
-                : m
-            )
-          );
+          updateAssistantMessage(assistantMsgId, (current) => ({
+            ...current,
+            status: null,
+            text: current.text
+              ? `${current.text}\n\nJARVIS error: ${error}`
+              : `JARVIS error: ${error}`,
+          }));
         },
       });
     } catch (error) {
-      if (error?.name !== 'AbortError') {
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantMsgId
-              ? {
-                  ...m,
-                  status: null,
-                  text: m.text
-                    ? `${m.text}\n\nJARVIS error: Unable to connect to the stream.`
-                    : 'JARVIS error: Unable to connect to the stream.',
-                }
-              : m
-          )
-        );
+      if (error?.name !== 'AbortError' && error?.name !== 'CanceledError') {
+        updateAssistantMessage(assistantMsgId, (current) => ({
+          ...current,
+          status: null,
+          text: current.text
+            ? `${current.text}\n\nJARVIS error: Unable to connect to the stream.`
+            : 'JARVIS error: Unable to connect to the stream.',
+        }));
       }
     } finally {
+      if (activeStreamRef.current === controller) {
+        activeStreamRef.current = null;
+      }
       setLoading(false);
     }
   };

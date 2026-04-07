@@ -17,7 +17,7 @@ Public API:
 """
 import asyncio
 import uuid
-from typing import Literal
+from typing import Any, Literal
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_ollama import ChatOllama
@@ -37,6 +37,109 @@ from utils.prompts import (
 from agents.reasoning_agent import build_reasoning_agent
 
 logger = get_logger("orchestrator")
+
+_INPUT_TOKEN_KEYS = (
+    "input_tokens",
+    "prompt_tokens",
+    "prompt_token_count",
+    "prompt_eval_count",
+)
+_OUTPUT_TOKEN_KEYS = (
+    "output_tokens",
+    "completion_tokens",
+    "completion_token_count",
+    "eval_count",
+)
+
+
+def _to_mapping(value: Any) -> dict[str, Any] | None:
+    if isinstance(value, dict):
+        return value
+    if hasattr(value, "model_dump"):
+        try:
+            dumped = value.model_dump()
+            if isinstance(dumped, dict):
+                return dumped
+        except Exception:
+            pass
+    if hasattr(value, "dict"):
+        try:
+            dumped = value.dict()
+            if isinstance(dumped, dict):
+                return dumped
+        except Exception:
+            pass
+    return None
+
+
+def _to_int(value: Any) -> int | None:
+    if value is None or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+    if isinstance(value, str):
+        stripped = value.strip()
+        if not stripped:
+            return None
+        try:
+            return int(stripped)
+        except ValueError:
+            return None
+    return None
+
+
+def _first_present_int(mapping: dict[str, Any], keys: tuple[str, ...]) -> int | None:
+    for key in keys:
+        value = _to_int(mapping.get(key))
+        if value is not None:
+            return value
+    return None
+
+
+def _extract_tokens_from_payload(
+    payload: Any,
+    depth: int = 0,
+) -> tuple[int | None, int | None]:
+    if payload is None or depth > 3:
+        return None, None
+
+    mapping = _to_mapping(payload)
+    if mapping is None:
+        return None, None
+
+    input_tokens = _first_present_int(mapping, _INPUT_TOKEN_KEYS)
+    output_tokens = _first_present_int(mapping, _OUTPUT_TOKEN_KEYS)
+    if input_tokens is not None or output_tokens is not None:
+        return input_tokens, output_tokens
+
+    for key in ("usage_metadata", "response_metadata", "generation_info", "message", "chunk", "output"):
+        if key in mapping:
+            found_input, found_output = _extract_tokens_from_payload(mapping.get(key), depth + 1)
+            if found_input is not None or found_output is not None:
+                return found_input, found_output
+
+    generations = mapping.get("generations")
+    if isinstance(generations, list):
+        for item in generations:
+            found_input, found_output = _extract_tokens_from_payload(item, depth + 1)
+            if found_input is not None or found_output is not None:
+                return found_input, found_output
+
+    return None, None
+
+
+def _extract_tokens_from_event(event: dict[str, Any]) -> tuple[int, int]:
+    data = event.get("data", {})
+    if isinstance(data, dict):
+        candidates = (data, data.get("output"), data.get("chunk"))
+    else:
+        candidates = (data,)
+
+    for candidate in candidates:
+        input_tokens, output_tokens = _extract_tokens_from_payload(candidate)
+        if input_tokens is not None or output_tokens is not None:
+            return input_tokens or 0, output_tokens or 0
+    return 0, 0
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -382,6 +485,10 @@ class NuraOrchestrator:
         self._check_ready()
         session_id = session_id or str(uuid.uuid4())
         lc_messages = [HumanMessage(content=message)]
+        total_input_tokens = 0
+        total_output_tokens = 0
+        routed_intent = "chat"
+        routed_agent = "chat_agent"
 
         initial_state = NuraState(
             messages=lc_messages,
@@ -391,8 +498,35 @@ class NuraOrchestrator:
         )
 
         try:
+            yield {
+                "type": "start",
+                "stage": "thinking",
+                "content": "Loading context and selecting the best agent.",
+                "session_id": session_id,
+            }
+
             async for event in self._graph.astream_events(initial_state, version="v2"):
                 kind = event.get("event", "")
+
+                if kind == "on_chat_model_end":
+                    input_tokens, output_tokens = _extract_tokens_from_event(event)
+                    total_input_tokens += input_tokens
+                    total_output_tokens += output_tokens
+                    continue
+
+                if kind == "on_chain_end" and event.get("name") == "intent_router":
+                    output = event.get("data", {}).get("output", {})
+                    routed_intent = output.get("intent", routed_intent)
+                    routed_agent = output.get("active_agent", routed_agent)
+                    yield {
+                        "type": "thinking",
+                        "stage": "routing",
+                        "content": f"Intent='{routed_intent}' -> agent='{routed_agent}'.",
+                        "intent": routed_intent,
+                        "agent": routed_agent,
+                        "session_id": session_id,
+                    }
+                    continue
 
                 if kind == "on_chat_model_stream":
                     chunk = event.get("data", {}).get("chunk")
@@ -407,8 +541,11 @@ class NuraOrchestrator:
                     output = event.get("data", {}).get("output", {})
                     yield {
                         "type":       "done",
-                        "intent":     output.get("intent", "chat"),
-                        "agent":      output.get("active_agent", "chat_agent"),
+                        "intent":     output.get("intent", routed_intent),
+                        "agent":      output.get("active_agent", routed_agent),
+                        "input_tokens": total_input_tokens,
+                        "output_tokens": total_output_tokens,
+                        "total_tokens": total_input_tokens + total_output_tokens,
                         "session_id": session_id,
                     }
 

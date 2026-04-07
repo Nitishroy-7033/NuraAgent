@@ -17,7 +17,11 @@ class OllamaSettings(BaseSettings):
 class MongoSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="MONGO_", extra="ignore")
     uri: str = "mongodb://localhost:27017"
-    db_name: str = "nura"
+    db_name: str = "NuraAgent"
+    collection_chat_history: str = "ChatHistory"
+    collection_sessions: str = "Sessions"
+    collection_knowledge: str = "KnowledgeBase"
+    collection_users: str = "Users"
 
 
 class RedisSettings(BaseSettings):

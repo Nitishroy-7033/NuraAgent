@@ -3,3 +3,4 @@ assistance/app.log
 backend/logs/app.log
 backend/logs/app.log
 assistance/logs/app.log
+assistance/.tmp_pycache/

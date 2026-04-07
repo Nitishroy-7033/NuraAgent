@@ -1,0 +1,563 @@
+2026-04-07 23:06:42 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:06:42 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:06:42 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:06:42 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:06:42 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:06:42 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:06:44 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:06:44 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:06:44 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:06:44 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:06:47 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:06:47 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:06:47 | INFO     | api | JARVIS API ready
+2026-04-07 23:08:14 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:08:18 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:08:18 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:08:18 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:08:18 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:08:18 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:08:18 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:08:18 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:08:18 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:08:18 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:08:18 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:08:21 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:08:21 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:08:21 | INFO     | api | JARVIS API ready
+2026-04-07 23:08:56 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:09:00 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:09:00 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:09:00 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:09:00 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:09:00 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:09:00 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:09:00 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:00 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:09:00 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:09:00 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:03 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:09:03 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:09:03 | INFO     | api | JARVIS API ready
+2026-04-07 23:09:14 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:09:18 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:09:18 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:09:18 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:09:18 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:09:18 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:09:18 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:09:19 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:19 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:09:19 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:09:19 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:22 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:09:22 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:09:22 | INFO     | api | JARVIS API ready
+2026-04-07 23:09:22 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:09:26 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:09:26 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:09:26 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:09:26 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:09:26 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:09:26 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:09:26 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:26 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:09:26 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:09:26 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:29 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:09:29 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:09:29 | INFO     | api | JARVIS API ready
+2026-04-07 23:09:41 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:09:45 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:09:45 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:09:45 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:09:45 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:09:45 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:09:45 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:09:45 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:45 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:09:45 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:09:45 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:49 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:09:49 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:09:49 | INFO     | api | JARVIS API ready
+2026-04-07 23:09:49 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:09:52 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:09:52 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:09:52 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:09:52 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:09:52 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:09:52 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:09:53 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:53 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:09:53 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:09:53 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:09:56 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:09:56 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:09:56 | INFO     | api | JARVIS API ready
+2026-04-07 23:09:56 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:10:00 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:10:00 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:10:00 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:10:00 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:10:00 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:10:00 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:10:00 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:10:00 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:10:00 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:10:00 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:10:04 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:10:04 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:10:04 | INFO     | api | JARVIS API ready
+2026-04-07 23:10:04 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:10:08 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:10:08 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:10:08 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:10:08 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:10:08 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:10:08 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:10:08 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:10:08 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:10:08 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:10:08 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:10:12 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:10:12 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:10:12 | INFO     | api | JARVIS API ready
+2026-04-07 23:10:12 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:10:17 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:10:17 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:10:17 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:10:17 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:10:17 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:10:17 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:10:17 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:10:17 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:10:17 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:10:17 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:10:21 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:10:21 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:10:21 | INFO     | api | JARVIS API ready
+2026-04-07 23:10:21 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:21:44 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:21:44 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:21:44 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:21:44 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:21:44 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:21:44 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:21:44 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:21:44 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:21:44 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:21:44 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:21:48 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:21:48 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:21:48 | INFO     | api | JARVIS API ready
+2026-04-07 23:23:02 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:23:06 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:23:06 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:23:06 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:23:06 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:23:06 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:23:06 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:23:07 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:23:07 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:23:07 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:23:07 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:23:10 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:23:10 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:23:10 | INFO     | api | JARVIS API ready
+2026-04-07 23:23:10 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:23:14 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:23:14 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:23:14 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:23:14 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:23:14 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:23:14 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:23:15 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:23:15 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:23:15 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:23:15 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:23:18 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:23:18 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:23:18 | INFO     | api | JARVIS API ready
+2026-04-07 23:23:40 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:23:46 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:23:46 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:23:46 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:23:46 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:23:46 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:23:46 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:23:46 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:23:46 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:23:46 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:23:46 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:23:50 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:23:50 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:23:50 | INFO     | api | JARVIS API ready
+2026-04-07 23:25:14 | INFO     | orchestrator | Intent | value='chat' session='string'
+2026-04-07 23:25:14 | INFO     | orchestrator | Chat agent | session='string'
+2026-04-07 23:25:27 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-07 23:37:35 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:37:40 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:37:40 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:37:40 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:37:40 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:37:40 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:37:40 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:37:41 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:37:41 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:37:41 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:37:41 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:37:45 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:37:45 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:37:45 | INFO     | api | JARVIS API ready
+2026-04-07 23:37:45 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:37:48 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:37:48 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:37:48 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:37:48 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:37:48 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:37:48 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:37:49 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:37:49 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:37:49 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:37:49 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:37:53 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:37:53 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:37:53 | INFO     | api | JARVIS API ready
+2026-04-07 23:37:53 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:37:57 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:37:57 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:37:57 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:37:57 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:37:57 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:37:57 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:37:58 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:37:58 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:37:58 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:37:58 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:38:02 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:38:02 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:38:02 | INFO     | api | JARVIS API ready
+2026-04-07 23:40:09 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:40:14 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:40:14 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:40:14 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:40:14 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:40:14 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:40:14 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:40:14 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:40:14 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:40:15 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:40:15 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:40:19 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:40:19 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:40:19 | INFO     | api | JARVIS API ready
+2026-04-07 23:40:19 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:40:24 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:40:24 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:40:24 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:40:24 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:40:24 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:40:24 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:40:25 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:40:25 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:40:25 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:40:25 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:40:30 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:40:30 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:40:30 | INFO     | api | JARVIS API ready
+2026-04-07 23:40:31 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:40:36 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:40:36 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:40:36 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:40:36 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:40:36 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:40:36 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:40:37 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:40:37 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:40:37 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:40:37 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:40:42 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:40:42 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:40:42 | INFO     | api | JARVIS API ready
+2026-04-07 23:41:51 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:41:58 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:41:58 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:41:58 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:41:58 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:41:58 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:41:58 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:41:59 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:41:59 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:41:59 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:41:59 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:42:05 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:42:05 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:42:05 | INFO     | api | JARVIS API ready
+2026-04-07 23:42:17 | INFO     | orchestrator | Intent | value='chat' session='string'
+2026-04-07 23:42:17 | INFO     | orchestrator | Chat agent | session='string'
+2026-04-07 23:42:31 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-07 23:52:24 | INFO     | api | JARVIS API shutting down...
+2026-04-07 23:52:29 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-07 23:52:29 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-07 23:52:29 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-07 23:52:29 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-07 23:52:29 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-07 23:52:29 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-07 23:52:30 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:52:30 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-07 23:52:30 | INFO     | mongo_store | MongoDB ready | db='nura'
+2026-04-07 23:52:30 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-07 23:52:33 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-07 23:52:33 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-07 23:52:33 | INFO     | api | JARVIS API ready
+2026-04-07 23:57:02 | INFO     | orchestrator | Intent | value='chat' session='443fd4fd'
+2026-04-07 23:57:02 | INFO     | orchestrator | Chat agent | session='443fd4fd'
+2026-04-07 23:57:23 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-08 00:01:21 | INFO     | orchestrator | Intent | value='chat' session='36be4dc8'
+2026-04-08 00:01:21 | INFO     | orchestrator | Chat agent | session='36be4dc8'
+2026-04-08 00:01:45 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-08 00:02:27 | INFO     | orchestrator | Intent | value='chat' session='565124eb'
+2026-04-08 00:02:27 | INFO     | orchestrator | Chat agent | session='565124eb'
+2026-04-08 00:02:39 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-08 00:02:52 | INFO     | orchestrator | Intent | value='reasoning' session='eb2d614c'
+2026-04-08 00:02:52 | INFO     | reasoning_agent | Reasoning agent activated | session='eb2d614c'
+2026-04-08 00:03:22 | INFO     | reasoning_agent | Executing code from LLM | blocks=1
+2026-04-08 00:03:22 | INFO     | code_executor | Executing code: 2 lines
+2026-04-08 00:03:22 | ERROR    | orchestrator | Stream error | error=''
+2026-04-08 00:05:11 | INFO     | orchestrator | Intent | value='chat' session='ebcc2f2e'
+2026-04-08 00:05:11 | INFO     | orchestrator | Chat agent | session='ebcc2f2e'
+2026-04-08 00:05:24 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-08 00:20:23 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:20:27 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:20:27 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:20:27 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:20:27 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:20:27 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:20:27 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:20:28 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:20:28 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:20:28 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:20:28 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:20:32 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:20:32 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:20:32 | INFO     | api | JARVIS API ready
+2026-04-08 00:20:45 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:22:38 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:22:38 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:22:38 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:22:38 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:22:38 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:22:38 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:22:38 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:22:38 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:22:38 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:22:38 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:22:42 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:22:42 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:22:42 | INFO     | api | JARVIS API ready
+2026-04-08 00:23:03 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:23:37 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:23:37 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:23:37 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:23:37 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:23:37 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:23:37 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:23:38 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:23:38 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:23:38 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:23:38 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:23:42 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:23:42 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:23:42 | INFO     | api | JARVIS API ready
+2026-04-08 00:23:50 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:23:54 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:23:54 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:23:54 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:23:54 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:23:54 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:23:54 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:23:54 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:23:54 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:23:54 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:23:54 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:23:58 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:23:58 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:23:58 | INFO     | api | JARVIS API ready
+2026-04-08 00:23:59 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:24:02 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:24:02 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:24:02 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:24:02 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:24:02 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:24:02 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:24:03 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:03 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:24:03 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:24:03 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:07 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:24:07 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:24:07 | INFO     | api | JARVIS API ready
+2026-04-08 00:24:13 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:24:16 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:24:16 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:24:16 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:24:16 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:24:16 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:24:16 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:24:16 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:16 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:24:16 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:24:16 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:20 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:24:20 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:24:20 | INFO     | api | JARVIS API ready
+2026-04-08 00:24:26 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:24:30 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:24:30 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:24:30 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:24:30 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:24:30 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:24:30 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:24:31 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:31 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:24:31 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:24:31 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:35 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:24:35 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:24:35 | INFO     | api | JARVIS API ready
+2026-04-08 00:24:36 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:24:40 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:24:40 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:24:40 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:24:40 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:24:40 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:24:40 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:24:40 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:40 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:24:40 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:24:40 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:44 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:24:44 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:24:44 | INFO     | api | JARVIS API ready
+2026-04-08 00:24:44 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:24:48 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:24:48 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:24:48 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:24:48 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:24:48 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:24:48 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:24:48 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:48 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:24:48 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:24:48 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:52 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:24:52 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:24:52 | INFO     | api | JARVIS API ready
+2026-04-08 00:24:53 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:24:56 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:24:56 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:24:56 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:24:56 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:24:56 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:24:56 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:24:57 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:24:57 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:24:57 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:24:57 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:01 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:25:01 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:25:01 | INFO     | api | JARVIS API ready
+2026-04-08 00:25:07 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:25:10 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:25:10 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:25:10 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:25:10 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:25:10 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:25:10 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:25:10 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:10 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:25:10 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:25:10 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:14 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:25:14 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:25:14 | INFO     | api | JARVIS API ready
+2026-04-08 00:25:24 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:25:27 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:25:27 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:25:27 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:25:27 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:25:27 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:25:27 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:25:27 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:27 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:25:27 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:25:27 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:31 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:25:31 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:25:31 | INFO     | api | JARVIS API ready
+2026-04-08 00:25:36 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:25:40 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:25:40 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:25:40 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:25:40 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:25:40 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:25:40 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:25:40 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:40 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:25:40 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:25:40 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:44 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:25:44 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:25:44 | INFO     | api | JARVIS API ready
+2026-04-08 00:25:45 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:25:48 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:25:48 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:25:48 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:25:48 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:25:48 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:25:48 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:25:48 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:48 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:25:48 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:25:48 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:25:53 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:25:53 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:25:53 | INFO     | api | JARVIS API ready
+2026-04-08 00:28:06 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:28:12 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:28:12 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:28:12 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:28:12 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:28:12 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:28:12 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:28:12 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:28:12 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:28:12 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:28:12 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:28:16 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:28:16 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:28:16 | INFO     | api | JARVIS API ready
+2026-04-08 00:30:43 | INFO     | orchestrator | Intent | value='chat' session='6b01af5b'
+2026-04-08 00:30:43 | INFO     | orchestrator | Chat agent | session='6b01af5b'
+2026-04-08 00:30:55 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-08 00:32:08 | INFO     | api | JARVIS API shutting down...
+2026-04-08 00:32:18 | INFO     | api | JARVIS API starting... | env='development' user='Nitish'
+2026-04-08 00:32:18 | INFO     | api | API bound | host='0.0.0.0' port=8000
+2026-04-08 00:32:18 | INFO     | api | API URLs | base='http://127.0.0.1:8000' docs='http://127.0.0.1:8000/docs' redoc='http://127.0.0.1:8000/redoc' health='http://127.0.0.1:8000/health'
+2026-04-08 00:32:18 | INFO     | api | Models | ollama_base_url='http://localhost:11434' chat_model='llama3.1:8b' reasoning_model='deepseek-r1:8b' embed_model='nomic-embed-text'
+2026-04-08 00:32:18 | INFO     | api | Logging to file | path='F:\\Personal Code\\NuraAgent\\assistance\\logs\\nura.log'
+2026-04-08 00:32:18 | INFO     | chroma_store | Initialising ChromaDB | path='./data/chroma'
+2026-04-08 00:32:18 | INFO     | chroma_store | ChromaDB ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:32:18 | INFO     | mongo_store | Connecting to MongoDB | uri='mongodb://localhost:27017'
+2026-04-08 00:32:18 | INFO     | mongo_store | MongoDB ready | db='NuraAgent'
+2026-04-08 00:32:18 | INFO     | knowledge_service | Knowledge service ready | knowledge_docs=1 conversation_docs=0
+2026-04-08 00:32:22 | INFO     | orchestrator | LangGraph compiled successfully
+2026-04-08 00:32:22 | INFO     | orchestrator | NuraOrchestrator ready
+2026-04-08 00:32:22 | INFO     | api | JARVIS API ready
+2026-04-08 00:32:52 | INFO     | orchestrator | Intent | value='chat' session='68435309'
+2026-04-08 00:32:52 | INFO     | orchestrator | Chat agent | session='68435309'
+2026-04-08 00:33:14 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''
+2026-04-08 00:33:59 | INFO     | orchestrator | Intent | value='chat' session='c0d295e1'
+2026-04-08 00:33:59 | INFO     | orchestrator | Chat agent | session='c0d295e1'
+2026-04-08 00:34:13 | WARNING  | knowledge_service | Knowledge extraction failed | error='\'\\n  "summary"\''

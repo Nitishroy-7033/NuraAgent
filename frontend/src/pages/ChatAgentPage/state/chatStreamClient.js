@@ -1,4 +1,4 @@
-const STREAM_URL = 'http://localhost:8000/chat/stream';
+import { postChatStream } from '../../../context/apiClient';
 
 const normalizeDataLine = (line) => {
   const raw = line.slice(5);
@@ -19,66 +19,69 @@ const parseSseEvent = (eventText) => {
 
   try {
     return { data: JSON.parse(dataPayload) };
-  } catch (error) {
+  } catch {
     return { error: 'Invalid stream payload received.' };
   }
 };
 
 export const streamChatCompletion = async ({
-  query,
-  threadId = null,
+  message,
+  sessionId = null,
   onToken,
+  onEvent,
   onDone,
   onError,
   signal,
 }) => {
-  const response = await fetch(STREAM_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'text/event-stream',
-    },
-    body: JSON.stringify({
-      query,
-      thread_id: threadId,
-    }),
-    signal,
-  });
+  const getResponseTextFromProgress = (progress) => {
+    const target =
+      progress?.event?.target ||
+      progress?.event?.currentTarget ||
+      progress?.target ||
+      progress?.currentTarget;
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || 'Failed to connect to the stream.');
-  }
-
-  if (!response.body) {
-    throw new Error('Streaming response body was empty.');
-  }
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
-  let streamDone = false;
-
-  while (!streamDone) {
-    const { value, done } = await reader.read();
-    if (done) {
-      break;
+    if (typeof target?.responseText === 'string') {
+      return target.responseText;
     }
 
-    buffer += decoder.decode(value, { stream: true });
-    const normalized = buffer.replace(/\r\n/g, '\n');
-    const parts = normalized.split('\n\n');
-    buffer = parts.pop() || '';
+    if (typeof target?.response === 'string') {
+      return target.response;
+    }
 
-    for (const part of parts) {
-      const parsed = parseSseEvent(part.trim());
+    return '';
+  };
+
+  let consumedLength = 0;
+  let buffer = '';
+  let streamDone = false;
+  let doneNotified = false;
+
+  const notifyDone = (payload = null) => {
+    if (!doneNotified) {
+      doneNotified = true;
+      onDone?.(payload);
+    }
+  };
+
+  const processBufferedEvents = ({ flushRemainder = false } = {}) => {
+    if (!buffer) {
+      return;
+    }
+
+    const normalized = buffer.replace(/\r\n/g, '\n');
+    const eventBlocks = normalized.split('\n\n');
+
+    buffer = flushRemainder ? '' : eventBlocks.pop() || '';
+
+    for (const block of eventBlocks) {
+      const parsed = parseSseEvent(block.trim());
       if (!parsed) {
         continue;
       }
 
       if (parsed.done) {
         streamDone = true;
-        onDone?.();
+        notifyDone();
         break;
       }
 
@@ -92,9 +95,59 @@ export const streamChatCompletion = async ({
         continue;
       }
 
-      if (typeof parsed.data?.text === 'string') {
-        onToken?.(parsed.data.text);
+      onEvent?.(parsed.data);
+
+      if (parsed.data?.type === 'done') {
+        streamDone = true;
+        notifyDone(parsed.data);
+        break;
+      }
+
+      if (parsed.data?.type === 'chunk' && typeof parsed.data?.content === 'string') {
+        onToken?.(parsed.data.content, parsed.data);
+      } else if (typeof parsed.data?.text === 'string') {
+        onToken?.(parsed.data.text, parsed.data);
       }
     }
+  };
+
+  try {
+    await postChatStream({
+      message,
+      sessionId,
+      signal,
+      onDownloadProgress: (progress) => {
+        if (streamDone) {
+          return;
+        }
+
+        const responseText = getResponseTextFromProgress(progress);
+        if (!responseText || responseText.length <= consumedLength) {
+          return;
+        }
+
+        buffer += responseText.slice(consumedLength);
+        consumedLength = responseText.length;
+        processBufferedEvents();
+      },
+    });
+
+    processBufferedEvents({ flushRemainder: true });
+
+    if (!streamDone) {
+      notifyDone();
+    }
+  } catch (error) {
+    if (error?.name === 'CanceledError' || error?.name === 'AbortError') {
+      throw error;
+    }
+
+    const errorMessage =
+      error?.response?.data?.detail ||
+      error?.response?.data?.message ||
+      error?.message ||
+      'Failed to connect to the stream.';
+
+    throw new Error(errorMessage);
   }
 };
