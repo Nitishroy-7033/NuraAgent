@@ -5,8 +5,9 @@ Full flow:
   START
     → context_loader      fetch relevant memories from knowledge base
     → intent_router       classify message → pick agent
+    → user_logger         save user message immediately
     → [agent node]        chat | reasoning | entertainment | realtime | system | knowledge | mcp
-    → knowledge_writer    save message + background knowledge extraction
+    → knowledge_writer    save assistant message + background knowledge extraction
     → END
 
 Public API:
@@ -35,6 +36,7 @@ from utils.prompts import (
     NURA_IDENTITY,
 )
 from agents.reasoning_agent import build_reasoning_agent
+from agents.knowledge_extractor_agent import knowledge_extractor_agent
 
 logger = get_logger("orchestrator")
 
@@ -176,6 +178,23 @@ async def intent_router_node(state: NuraState) -> dict:
     return {"intent": intent, "active_agent": f"{intent}_agent"}
 
 
+async def user_logger_node(state: NuraState) -> dict:
+    """
+    Pre-agent node — save the user message immediately after identification.
+    Ensures user messages are logged even if assistant fails.
+    """
+    if not state.user_message:
+        return {}
+
+    await mongo_store.save_message(
+        session_id=state.session_id,
+        role="user",
+        content=state.user_message,
+        metadata={"intent": state.intent},
+    )
+    return {}
+
+
 def route_to_agent(
     state: NuraState,
 ) -> Literal[
@@ -202,19 +221,13 @@ def route_to_agent(
 
 async def knowledge_writer_node(state: NuraState) -> dict:
     """
-    Post-agent node — save conversation + trigger background extraction.
+    Post-agent node — save assistant response + trigger background extraction.
     Never delays the user's response.
     """
     if not state.user_message or not state.response:
         return {}
 
-    # Save both turns to MongoDB
-    await mongo_store.save_message(
-        session_id=state.session_id,
-        role="user",
-        content=state.user_message,
-        metadata={"intent": state.intent},
-    )
+    # Save assistant turn to MongoDB
     await mongo_store.save_message(
         session_id=state.session_id,
         role="assistant",
@@ -222,9 +235,10 @@ async def knowledge_writer_node(state: NuraState) -> dict:
         metadata={"agent": state.active_agent},
     )
 
-    # Fire-and-forget: extract knowledge in background
+    # Fire-and-forget: run Knowledge Extractor Agent in the background.
+    # User is NOT blocked — they can send the next message immediately.
     asyncio.create_task(
-        knowledge_service.extract_and_store(
+        knowledge_extractor_agent.run(
             session_id=state.session_id,
             user_message=state.user_message,
             assistant_response=state.response,
@@ -363,6 +377,7 @@ def _build_graph():
     # Register all nodes
     graph.add_node("context_loader",      context_loader_node)
     graph.add_node("intent_router",       intent_router_node)
+    graph.add_node("user_logger",         user_logger_node)
     graph.add_node("chat_agent",          _build_chat_agent())
     graph.add_node("reasoning_agent",     build_reasoning_agent())
     graph.add_node("knowledge_agent",     _build_knowledge_agent())
@@ -375,14 +390,15 @@ def _build_graph():
     # Wire the flow
     graph.add_edge(START, "context_loader")
     graph.add_edge("context_loader", "intent_router")
+    graph.add_edge("intent_router", "user_logger")
 
-    # intent_router → one of the agent nodes (conditional)
+    # user_logger → one of the agent nodes (conditional)
     all_agents = [
         "chat_agent", "reasoning_agent", "knowledge_agent",
         "entertainment_agent", "realtime_agent", "system_agent", "mcp_agent",
     ]
     graph.add_conditional_edges(
-        "intent_router",
+        "user_logger",
         route_to_agent,
         {agent: agent for agent in all_agents},
     )

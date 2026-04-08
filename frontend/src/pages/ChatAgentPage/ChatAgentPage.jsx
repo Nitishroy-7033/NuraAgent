@@ -2,11 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatMainArea from './components/ChatMainArea';
 import { streamChatMessage } from './state/actions';
+import { useSelector } from 'react-redux';
 
 function ChatAgentPage() {
+  const { currentSession } = useSelector((state) => state.chat);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const activeStreamRef = useRef(null);
+
+  // Clear messages when session changes
+  useEffect(() => {
+    setMessages([]);
+  }, [currentSession?.id]);
 
   const updateAssistantMessage = (assistantMsgId, updater) => {
     setMessages((prev) =>
@@ -59,7 +66,7 @@ function ChatAgentPage() {
     try {
       await streamChatMessage({
         message: newUserMsg.text,
-        sessionId: null,
+        sessionId: currentSession?.id || currentSession?._id || null,
         signal: controller.signal,
         onEvent: (event) => {
           if (!event || (event.type !== 'start' && event.type !== 'thinking')) {

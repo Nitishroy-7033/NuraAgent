@@ -4,6 +4,7 @@ const APP_CONFIG = {
     timeoutMs: 120000,
     endpoints: {
       chatStream: 'agent/chat/stream',
+      sessions: 'sessions',
     },
   },
 };

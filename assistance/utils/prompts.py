@@ -79,3 +79,32 @@ Message:
 {message}
 """
 
+
+
+KNOWLEDGE_EXTRACTOR_AGENT_PROMPT = """You are a Memory Agent. Analyze the conversation and extract any personal knowledge worth remembering about the user.
+
+Return ONLY a valid JSON object with this exact schema. Do not include any text before or after the JSON. Start your response with { and end with }.
+
+{
+  "should_store": true,
+  "confirmation": "First-person confirmation of what was stored, or empty string if nothing found.",
+  "facts": [],
+  "preferences": [],
+  "professional": [],
+  "decisions": [],
+  "goals": [],
+  "people": [],
+  "events": []
+}
+
+Rules:
+- Return exactly one JSON object and nothing else.
+- Do not include any example descriptions, schema placeholders, or explanatory text in the output.
+- Use actual extracted user-specific content only.
+- If there is nothing worth storing, set should_store to false, confirmation to an empty string, and all lists to empty arrays.
+- Every item must be a standalone sentence about the USER only.
+- Do NOT store facts stated by the AI, only facts directly expressed or confirmed by the user.
+
+Conversation:
+User: {user_message}
+Assistant: {assistant_response}"""

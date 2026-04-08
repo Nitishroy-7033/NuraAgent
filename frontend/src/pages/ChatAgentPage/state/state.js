@@ -27,6 +27,9 @@ const chatAgentSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    setSessions: (state, action) => {
+      state.sessions = action.payload;
+    },
     clearChat: (state) => {
       state.messages = [];
       state.currentSession = null;
@@ -37,6 +40,7 @@ const chatAgentSlice = createSlice({
 export const { 
   setQuery, 
   setCurrentSession, 
+  setSessions,
   setMessages, 
   addMessage, 
   setLoading, 

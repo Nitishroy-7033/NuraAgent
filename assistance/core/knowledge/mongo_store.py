@@ -195,6 +195,8 @@ class MongoStore:
             "updated_at": datetime.utcnow(),
         }
         await self._db[settings.mongo.collection_sessions].insert_one(doc)
+        if "_id" in doc:
+            del doc["_id"]
         return doc
 
     async def upsert_session(self, session_id: str, data: dict):

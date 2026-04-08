@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
 import { useTheme } from '../../../context/ThemeContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchSessions, createNewChat } from '../state/actions';
+import { setCurrentSession, setMessages } from '../state/state';
 
 const Sidebar = () => {
     const { theme, toggleTheme } = useTheme();
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const dispatch = useDispatch();
+    const { sessions, currentSession } = useSelector((state) => state.chat);
+
+    useEffect(() => {
+        dispatch(fetchSessions());
+    }, [dispatch]);
 
     const toggleCollapse = () => {
         setIsCollapsed(!isCollapsed);
     };
-    const historyData = {
-        today: [
-            "Summarize the Key Insights from the 202...",
-            "Draft a Polite and Professional Follow-U...",
-            "Brainstorm Creative Startup App Ideas f..."
-        ],
-        yesterday: [
-            "Explain Blockchain Technology in Simple...",
-            "Translate an English Travel Guide into Sp...",
-            "Write Five Engaging Instagram Captions...",
-            "Help Me Debug a Python Script That Kee...",
-            "Plan a Balanced Weekly Workout Routine..."
-        ],
-        august: [
-            "Create an SEO-Optimized Blog Outline A...",
-            "Research and Recommend the Best Rem...",
-            "Generate a Catchy Tagline and Slogan fo..."
-        ]
+
+    const handleNewChat = () => {
+        dispatch(createNewChat("New Chat"));
+    };
+
+    const handleSelectSession = (session) => {
+        dispatch(setCurrentSession(session));
+        dispatch(setMessages([])); // For now, we don't fetch history, but clear to show it's a different context
     };
 
     return (
@@ -47,7 +46,7 @@ const Sidebar = () => {
                 </button>
             </div>
 
-            <button className="new-chat-btn">
+            <button className="new-chat-btn" onClick={handleNewChat}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 {!isCollapsed && (
                     <>
@@ -57,38 +56,24 @@ const Sidebar = () => {
                 )}
             </button>
 
-            {/* <nav className="nav-menu">
-                <div className="nav-item">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    Explore Cognivo AI
-                </div>
-                <div className="nav-item">
-                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h10.5a2.25 2.25 0 0 1 2.25 2.25V5a2.25 2.25 0 0 1-2.25 2.25H4"/><path d="M20 15.5V21a2 2 0 0 1-2 2H3.5a1.5 1.5 0 0 1 0-3H18.5a1.5 1.5 0 0 1 1.5 1.5Z"/></svg>
-                    Knowledge Base
-                </div>
-                <div className="nav-item">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    Templates
-                </div>
-            </nav> */}
-
             <div className="history-sections">
                 {!isCollapsed && (
                     <>
-                        <div className="history-category">TODAY</div>
-                        {historyData.today.map((item, idx) => (
-                            <div key={idx} className="history-item">{item}</div>
-                        ))}
-
-                        <div className="history-category">YESTERDAY</div>
-                        {historyData.yesterday.map((item, idx) => (
-                            <div key={idx} className="history-item">{item}</div>
-                        ))}
-
-                        <div className="history-category">AUGUST</div>
-                        {historyData.august.map((item, idx) => (
-                            <div key={idx} className="history-item">{item}</div>
-                        ))}
+                        <div className="history-category">RECENT CHATS</div>
+                        {sessions && sessions.length > 0 ? (
+                            sessions.map((session) => (
+                                <div 
+                                    key={session.id || session._id} 
+                                    className={`history-item ${currentSession?.id === (session.id || session._id) ? 'active' : ''}`}
+                                    onClick={() => handleSelectSession(session)}
+                                    title={session.title}
+                                >
+                                    {session.title || "Untitled Chat"}
+                                </div>
+                            ))
+                        ) : (
+                            <div className="history-empty">No recent chats</div>
+                        )}
                     </>
                 )}
             </div>
@@ -106,14 +91,6 @@ const Sidebar = () => {
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 -1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     {!isCollapsed && 'Settings'}
                 </div>
-                {/* <div className="user-card">
-                    <img src="https://ui-avatars.com/api/?name=Joko+Handoyo&background=f0f0f0" alt="User" />
-                    <div className="user-info">
-                        <span className="user-name">Joko Handoyo</span>
-                        <span className="user-plan">Free</span>
-                    </div>
-                    <svg className="user-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-                </div> */}
             </div>
         </aside>
     );

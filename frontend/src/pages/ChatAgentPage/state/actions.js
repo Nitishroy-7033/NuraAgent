@@ -1,5 +1,40 @@
-import { addMessage, setLoading } from './state';
+import { addMessage, setLoading, setSessions, setCurrentSession, setMessages } from './state';
 import { streamChatCompletion } from './chatStreamClient';
+import apiClient from '../../../context/apiClient';
+import { API_ENDPOINTS } from '../../../configs/configs';
+
+const DEFAULT_USER_ID = "sdf"; // As per request example
+
+export const fetchSessions = (limit = 20) => async (dispatch) => {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.sessions, {
+      params: { userId: DEFAULT_USER_ID, limit }
+    });
+    dispatch(setSessions(response.data.sessions || []));
+  } catch (error) {
+    console.error('Failed to fetch sessions:', error);
+  }
+};
+
+export const createNewChat = (title = "New Chat") => async (dispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.sessions, {
+      title,
+      userId: DEFAULT_USER_ID
+    });
+    const newSession = response.data;
+    dispatch(setCurrentSession(newSession));
+    dispatch(setMessages([])); // Clear messages for new session
+    dispatch(fetchSessions()); // Refresh list
+    return newSession;
+  } catch (error) {
+    console.error('Failed to create session:', error);
+    return null;
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
 
 export const streamChatMessage = async ({
   message,
@@ -20,7 +55,7 @@ export const streamChatMessage = async ({
     onError,
   });
 
-export const sendChatMessage = (message) => async (dispatch) => {
+export const sendChatMessage = (message, sessionId = null) => async (dispatch) => {
   dispatch(setLoading(true));
 
   dispatch(addMessage({ role: 'user', text: message }));
@@ -30,6 +65,7 @@ export const sendChatMessage = (message) => async (dispatch) => {
 
     await streamChatMessage({
       message,
+      sessionId,
       onChunk: (chunk) => {
         assistantText += chunk;
       },
