@@ -6,6 +6,7 @@ from langchain_ollama import ChatOllama
 
 from core.config import config
 from core.knowledge.chroma_store import chroma_store
+from core.knowledge.knowledge_service import knowledge_service
 from core.knowledge.mongo_store import mongo_store
 from utils.logger import get_logger
 from utils.prompts import KNOWLEDGE_EXTRACTOR_AGENT_PROMPT
@@ -233,6 +234,21 @@ class KnowledgeExtractorAgent:
                     continue
 
                 item = item.strip()
+
+                duplicate = await knowledge_service.find_duplicate_knowledge(
+                    content=item,
+                    category=category,
+                )
+                if duplicate:
+                    logger.debug(
+                        "Skipping duplicate knowledge",
+                        session=session_id[:8],
+                        category=category,
+                        reason=duplicate["reason"],
+                        score=duplicate["score"],
+                        preview=item[:80],
+                    )
+                    continue
 
                 # Store in ChromaDB for semantic search
                 chroma_id = await chroma_store.add_knowledge(

@@ -1,6 +1,7 @@
 from datetime import datetime
 import uuid
 from typing import Any
+import re
 
 import motor.motor_asyncio
 from pymongo import DESCENDING, ASCENDING, IndexModel
@@ -9,6 +10,13 @@ from core.config import settings
 from utils.logger import get_logger
 
 logger = get_logger("mongo_store")
+
+
+def _normalize_knowledge_content(content: str) -> str:
+    """Normalize knowledge text so repeated facts can be matched reliably."""
+    normalized = content.strip().lower()
+    normalized = re.sub(r"\s+", " ", normalized)
+    return normalized
 
 
 class MongoStore:
@@ -39,6 +47,7 @@ class MongoStore:
             IndexModel([("user_id", ASCENDING), ("created_at", DESCENDING)]),
             IndexModel([("category", ASCENDING)]),
             IndexModel([("tags", ASCENDING)]),
+            IndexModel([("user_id", ASCENDING), ("category", ASCENDING), ("content_normalized", ASCENDING)]),
         ])
         
         # Sessions
@@ -130,9 +139,11 @@ class MongoStore:
         chroma_id: str | None = None,
         metadata: dict | None = None,
     ) -> str:
+        normalized = _normalize_knowledge_content(content)
         doc = {
             "user_id": settings.nura.user_id,
             "content": content,
+            "content_normalized": normalized,
             "category": category,
             "tags": tags or [],
             "source_session": source_session,
@@ -142,6 +153,40 @@ class MongoStore:
         }
         result = await self._db[settings.mongo.collection_knowledge].insert_one(doc)
         return str(result.inserted_id)
+
+    async def find_existing_knowledge(
+        self,
+        content: str,
+        category: str,
+    ) -> dict | None:
+        normalized = _normalize_knowledge_content(content)
+        existing = await self._db[settings.mongo.collection_knowledge].find_one(
+            {
+                "user_id": settings.nura.user_id,
+                "category": category,
+                "content_normalized": normalized,
+            },
+            {"_id": 0, "content": 1, "category": 1, "chroma_id": 1, "created_at": 1},
+        )
+        if existing:
+            return existing
+
+        escaped = re.escape(content.strip())
+        legacy = await self._db[settings.mongo.collection_knowledge].find_one(
+            {
+                "user_id": settings.nura.user_id,
+                "category": category,
+                "content": {"$regex": f"^\\s*{escaped}\\s*$", "$options": "i"},
+            },
+            {"_id": 1, "content": 1, "category": 1, "chroma_id": 1, "created_at": 1},
+        )
+        if legacy and legacy.get("_id"):
+            await self._db[settings.mongo.collection_knowledge].update_one(
+                {"_id": legacy["_id"]},
+                {"$set": {"content_normalized": normalized}},
+            )
+            legacy.pop("_id", None)
+        return legacy
 
     async def get_all_knowledge(self, limit: int = 100) -> list[dict]:
         cursor = (

@@ -35,6 +35,9 @@ class ChromaSettings(BaseSettings):
     persist_dir: str = "./data/chroma"
     collection_knowledge: str = "nura_knowledge"
     collection_conversations: str = "nura_conversations"
+    semantic_duplicate_high_threshold: float = 0.93
+    semantic_duplicate_judge_threshold: float = 0.82
+    semantic_duplicate_candidates: int = 5
 
 
 class NuraSettings(BaseSettings):

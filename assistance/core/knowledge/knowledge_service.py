@@ -20,6 +20,19 @@ from utils.prompts import KNOWLEDGE_EXTRACT_PROMPT, KNOWLEDGE_QUERY_REWRITE_PROM
 
 logger = get_logger("knowledge_service")
 
+_SEMANTIC_DUPLICATE_JUDGE_PROMPT = """Decide whether these two memory statements mean the same thing about the user.
+
+Category: {category}
+Existing memory: {existing}
+Candidate memory: {candidate}
+
+Rules:
+- Answer SAME if they express the same durable user fact, preference, decision, goal, person, project, professional detail, or event, even with different wording.
+- Answer DIFFERENT if the candidate adds materially new information, changes the fact, or refers to a different thing.
+- If the candidate is an update or correction of the existing memory, answer DIFFERENT.
+
+Return only SAME or DIFFERENT."""
+
 
 def _render_prompt(template: str, **values: str) -> str:
     """Render prompt placeholders without interpreting literal JSON braces."""
@@ -116,6 +129,89 @@ class KnowledgeService:
                 temperature=0.1,   # low temp for accurate extraction
             )
         return self._llm
+
+    async def find_duplicate_knowledge(
+        self,
+        content: str,
+        category: str,
+    ) -> dict | None:
+        """Find an existing memory that should block this new write."""
+        exact = await mongo_store.find_existing_knowledge(content=content, category=category)
+        if exact:
+            return {
+                "reason": "exact",
+                "score": 1.0,
+                "existing": exact,
+            }
+
+        if not chroma_store.is_ready:
+            return None
+
+        candidates = await chroma_store.find_similar_knowledge(
+            content=content,
+            category=category,
+            n_results=config.chroma.semantic_duplicate_candidates,
+        )
+        if not candidates:
+            return None
+
+        high_threshold = config.chroma.semantic_duplicate_high_threshold
+        judge_threshold = config.chroma.semantic_duplicate_judge_threshold
+
+        for hit in candidates:
+            score = hit.get("score", 0.0)
+            if score >= high_threshold:
+                return {
+                    "reason": "semantic_high_confidence",
+                    "score": score,
+                    "existing": hit,
+                }
+
+        borderline_hits = [
+            hit for hit in candidates
+            if judge_threshold <= hit.get("score", 0.0) < high_threshold
+        ]
+
+        for hit in borderline_hits:
+            is_duplicate = await self._judge_semantic_duplicate(
+                existing=hit["content"],
+                candidate=content,
+                category=category,
+            )
+            if is_duplicate:
+                return {
+                    "reason": "semantic_judged",
+                    "score": hit.get("score", 0.0),
+                    "existing": hit,
+                }
+
+        return None
+
+    async def _judge_semantic_duplicate(
+        self,
+        existing: str,
+        candidate: str,
+        category: str,
+    ) -> bool:
+        """Use a small LLM judgment only for borderline semantic matches."""
+        try:
+            llm = self._get_llm()
+            prompt = _render_prompt(
+                _SEMANTIC_DUPLICATE_JUDGE_PROMPT,
+                category=category,
+                existing=existing,
+                candidate=candidate,
+            )
+            response = await llm.ainvoke([HumanMessage(content=prompt)])
+            verdict = response.content.strip().upper()
+            return verdict.startswith("SAME")
+        except Exception as e:
+            logger.warning(
+                "Semantic duplicate judge failed",
+                category=category,
+                error=str(e),
+            )
+            return False
 
     # ── 1. Context retrieval (called before every agent response) ─────────────
 
@@ -232,6 +328,21 @@ class KnowledgeService:
                     if not item or len(item.strip()) < 10:
                         continue
 
+                    duplicate = await self.find_duplicate_knowledge(
+                        content=item,
+                        category=category,
+                    )
+                    if duplicate:
+                        logger.debug(
+                            "Skipping duplicate extracted knowledge",
+                            session=session_id[:8],
+                            category=category,
+                            reason=duplicate["reason"],
+                            score=duplicate["score"],
+                            preview=item[:80],
+                        )
+                        continue
+
                     # Store in ChromaDB (semantic search)
                     chroma_id = await chroma_store.add_knowledge(
                         content=item,
@@ -272,6 +383,18 @@ class KnowledgeService:
         Store something the user explicitly asked Nura to remember.
         Returns the ChromaDB ID of the stored entry.
         """
+        duplicate = await self.find_duplicate_knowledge(content=content, category=category)
+        if duplicate:
+            logger.info(
+                "Explicit knowledge already exists",
+                category=category,
+                reason=duplicate["reason"],
+                score=duplicate["score"],
+                preview=content[:60],
+            )
+            existing = duplicate.get("existing", {})
+            return existing.get("chroma_id", "")
+
         chroma_id = await chroma_store.add_knowledge(
             content=content,
             metadata={

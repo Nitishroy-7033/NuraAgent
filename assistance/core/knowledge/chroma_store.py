@@ -63,6 +63,19 @@ class ChromaStore:
             for k, v in meta.items()
         }
 
+    def _build_where(self, **conditions: Any) -> dict:
+        """Build a Chroma-compatible where filter for one or more equality conditions."""
+        active_conditions = [
+            {key: value}
+            for key, value in conditions.items()
+            if value is not None
+        ]
+        if not active_conditions:
+            return {}
+        if len(active_conditions) == 1:
+            return active_conditions[0]
+        return {"$and": active_conditions}
+
     # ── Knowledge collection ──────────────────────────────────────────────────
 
     async def add_knowledge(
@@ -91,15 +104,21 @@ class ChromaStore:
         self,
         query: str,
         n_results: int = 5,
+        category: str | None = None,
     ) -> list[dict]:
         total = self._knowledge_col.count()
         if total == 0:
             return []
 
+        where = self._build_where(
+            user_id=settings.nura.user_id,
+            category=category,
+        )
+
         results = self._knowledge_col.query(
             query_embeddings=[self._embed(query)],
             n_results=min(n_results, total),
-            where={"user_id": settings.nura.user_id},
+            where=where,
             include=["documents", "metadatas", "distances"],
         )
 
@@ -113,6 +132,20 @@ class ChromaStore:
                     "score": round(1 - results["distances"][0][i], 3),
                 })
         return hits
+
+    async def find_similar_knowledge(
+        self,
+        content: str,
+        category: str,
+        n_results: int | None = None,
+    ) -> list[dict]:
+        """Return same-category knowledge hits ordered by semantic similarity."""
+        limit = n_results or settings.chroma.semantic_duplicate_candidates
+        return await self.search_knowledge(
+            query=content,
+            n_results=limit,
+            category=category,
+        )
 
     # ── Conversations collection ──────────────────────────────────────────────
 
@@ -151,7 +184,7 @@ class ChromaStore:
         results = self._conversations_col.query(
             query_embeddings=[self._embed(query)],
             n_results=min(n_results, total),
-            where={"user_id": settings.nura.user_id},
+            where=self._build_where(user_id=settings.nura.user_id),
             include=["documents", "metadatas", "distances"],
         )
 
