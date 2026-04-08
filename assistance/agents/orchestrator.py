@@ -52,6 +52,15 @@ _OUTPUT_TOKEN_KEYS = (
     "completion_token_count",
     "eval_count",
 )
+_STREAMABLE_AGENT_NODES = {
+    "chat_agent",
+    "reasoning_agent",
+    "entertainment_agent",
+    "realtime_agent",
+    "system_agent",
+    "knowledge_agent",
+    "mcp_agent",
+}
 
 
 def _to_mapping(value: Any) -> dict[str, Any] | None:
@@ -505,6 +514,8 @@ class NuraOrchestrator:
         total_output_tokens = 0
         routed_intent = "chat"
         routed_agent = "chat_agent"
+        active_stream_node: str | None = None
+        streamed_chunks: list[str] = []
 
         initial_state = NuraState(
             messages=lc_messages,
@@ -523,6 +534,7 @@ class NuraOrchestrator:
 
             async for event in self._graph.astream_events(initial_state, version="v2"):
                 kind = event.get("event", "")
+                event_name = event.get("name", "")
 
                 if kind == "on_chat_model_end":
                     input_tokens, output_tokens = _extract_tokens_from_event(event)
@@ -530,7 +542,11 @@ class NuraOrchestrator:
                     total_output_tokens += output_tokens
                     continue
 
-                if kind == "on_chain_end" and event.get("name") == "intent_router":
+                if kind == "on_chain_start" and event_name in _STREAMABLE_AGENT_NODES:
+                    active_stream_node = event_name
+                    continue
+
+                if kind == "on_chain_end" and event_name == "intent_router":
                     output = event.get("data", {}).get("output", {})
                     routed_intent = output.get("intent", routed_intent)
                     routed_agent = output.get("active_agent", routed_agent)
@@ -545,16 +561,31 @@ class NuraOrchestrator:
                     continue
 
                 if kind == "on_chat_model_stream":
+                    if active_stream_node not in _STREAMABLE_AGENT_NODES:
+                        continue
                     chunk = event.get("data", {}).get("chunk")
                     if chunk and hasattr(chunk, "content") and chunk.content:
+                        streamed_chunks.append(chunk.content)
                         yield {
                             "type":       "chunk",
                             "content":    chunk.content,
                             "session_id": session_id,
                         }
 
-                elif kind == "on_chain_end" and event.get("name") == "LangGraph":
+                elif kind == "on_chain_end" and event_name in _STREAMABLE_AGENT_NODES:
+                    if active_stream_node == event_name:
+                        active_stream_node = None
+                    continue
+
+                elif kind == "on_chain_end" and event_name == "LangGraph":
                     output = event.get("data", {}).get("output", {})
+                    final_response = output.get("response", "")
+                    if final_response and not "".join(streamed_chunks).strip():
+                        yield {
+                            "type": "chunk",
+                            "content": final_response,
+                            "session_id": session_id,
+                        }
                     yield {
                         "type":       "done",
                         "intent":     output.get("intent", routed_intent),

@@ -16,6 +16,28 @@ export const fetchSessions = (limit = 20) => async (dispatch) => {
   }
 };
 
+export const fetchChatHistory = (sessionId) => async (dispatch) => {
+  if (!sessionId) return;
+  dispatch(setLoading(true));
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.chatHistory, {
+      params: { sessionid: sessionId, pagesize: 20, currentpage: 1 }
+    });
+    const history = response.data.chats || [];
+    // Map to UI format and reverse to chronological order
+    const mappedHistory = history.map(chat => ({
+      role: chat.role,
+      text: chat.content,
+      id: chat.created_at,
+    })).reverse();
+    dispatch(setMessages(mappedHistory));
+  } catch (error) {
+    console.error('Failed to fetch chat history:', error);
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
 export const createNewChat = (title = "New Chat") => async (dispatch) => {
   dispatch(setLoading(true));
   try {

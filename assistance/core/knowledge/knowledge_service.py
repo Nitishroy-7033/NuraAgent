@@ -21,6 +21,36 @@ from utils.prompts import KNOWLEDGE_EXTRACT_PROMPT, KNOWLEDGE_QUERY_REWRITE_PROM
 logger = get_logger("knowledge_service")
 
 
+def _render_prompt(template: str, **values: str) -> str:
+    """Render prompt placeholders without interpreting literal JSON braces."""
+    rendered = template
+    for key, value in values.items():
+        rendered = rendered.replace(f"{{{key}}}", value)
+    return rendered
+
+
+def _sanitize_rewritten_query(text: str, fallback: str) -> str:
+    """Keep only the actual search query text returned by the rewrite model."""
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    cleaned = lines[0] if lines else ""
+    cleaned = cleaned.strip().strip("\"'")
+
+    prefixes = (
+        "search for ",
+        "search query: ",
+        "query: ",
+        "find ",
+        "look up ",
+    )
+    lowered = cleaned.lower()
+    for prefix in prefixes:
+        if lowered.startswith(prefix):
+            cleaned = cleaned[len(prefix):].strip(" :\"'")
+            break
+
+    return (cleaned or fallback).strip()[:200]
+
+
 
 def _extract_json(text: str) -> dict | None:
     """
@@ -159,7 +189,8 @@ class KnowledgeService:
         """
         try:
             # Ask LLM to extract structured knowledge
-            prompt = KNOWLEDGE_EXTRACT_PROMPT.format(
+            prompt = _render_prompt(
+                KNOWLEDGE_EXTRACT_PROMPT,
                 user_message=user_message,
                 assistant_response=assistant_response,
             )
@@ -275,7 +306,7 @@ class KnowledgeService:
             llm = self._get_llm()
             prompt = KNOWLEDGE_QUERY_REWRITE_PROMPT.format(message=message)
             response = await llm.ainvoke([HumanMessage(content=prompt)])
-            rewritten = response.content.strip()[:200]
+            rewritten = _sanitize_rewritten_query(response.content, message)
             logger.debug("Query rewritten", original=message[:50], rewritten=rewritten)
             return rewritten
         except Exception:

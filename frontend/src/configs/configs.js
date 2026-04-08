@@ -5,6 +5,7 @@ const APP_CONFIG = {
     endpoints: {
       chatStream: 'agent/chat/stream',
       sessions: 'sessions',
+      chatHistory: 'chat-history',
     },
   },
 };

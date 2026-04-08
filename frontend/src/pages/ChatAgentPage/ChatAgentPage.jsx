@@ -1,19 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatMainArea from './components/ChatMainArea';
-import { streamChatMessage } from './state/actions';
-import { useSelector } from 'react-redux';
+import { streamChatMessage, createNewChat, fetchChatHistory } from './state/actions';
+import { useSelector, useDispatch } from 'react-redux';
 
 function ChatAgentPage() {
-  const { currentSession } = useSelector((state) => state.chat);
+  const { currentSession, messages: reduxMessages } = useSelector((state) => state.chat);
+  const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const activeStreamRef = useRef(null);
 
-  // Clear messages when session changes
+  // Sync Redux messages with local state (e.g., when history is fetched)
   useEffect(() => {
-    setMessages([]);
-  }, [currentSession?.id]);
+    if (reduxMessages && reduxMessages.length > 0) {
+      setMessages(reduxMessages);
+    }
+  }, [reduxMessages]);
+
+  const lastSessionIdRef = useRef(currentSession?.id || currentSession?._id);
+
+  // Clear messages when session changes (but not when first creating a session for a new chat)
+  useEffect(() => {
+    const newId = currentSession?.id || currentSession?._id;
+    if (newId !== lastSessionIdRef.current) {
+      if (lastSessionIdRef.current) {
+        setMessages([]);
+      }
+      if (newId) {
+        dispatch(fetchChatHistory(newId));
+      }
+      lastSessionIdRef.current = newId;
+    }
+  }, [currentSession?.id, currentSession?._id, dispatch]);
 
   const updateAssistantMessage = (assistantMsgId, updater) => {
     setMessages((prev) =>
@@ -64,9 +83,20 @@ function ChatAgentPage() {
     setLoading(true);
 
     try {
+      let activeSessionId = currentSession?.id || currentSession?._id;
+
+      if (!activeSessionId) {
+        const sessionTitle = newUserMsg.text.substring(0, 20) || "New Chat";
+        const newSession = await dispatch(createNewChat(sessionTitle));
+        if (newSession) {
+          activeSessionId = newSession.id || newSession._id;
+          localStorage.setItem('lastSessionId', activeSessionId);
+        }
+      }
+
       await streamChatMessage({
         message: newUserMsg.text,
-        sessionId: currentSession?.id || currentSession?._id || null,
+        sessionId: activeSessionId || null,
         signal: controller.signal,
         onEvent: (event) => {
           if (!event || (event.type !== 'start' && event.type !== 'thinking')) {

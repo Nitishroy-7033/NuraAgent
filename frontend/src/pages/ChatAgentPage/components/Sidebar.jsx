@@ -20,7 +20,8 @@ const Sidebar = () => {
     };
 
     const handleNewChat = () => {
-        dispatch(createNewChat("New Chat"));
+        dispatch(setMessages([]));
+        dispatch(setCurrentSession(null));
     };
 
     const handleSelectSession = (session) => {
