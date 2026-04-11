@@ -7,8 +7,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class OllamaSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="OLLAMA_", extra="ignore")
     base_url: str = "http://localhost:11434"
-    chat_model: str = "llama3:8b"  # Changed from llama3.1:8b to reduce memory usage
-    reasoning_model: str = "deepseek-r1:8b"
+    chat_model: str =  "gemma4:e2b" #"llama3:8b"  # Changed from llama3.1:8b to reduce memory usage
+    reasoning_model: str = "gemma4:e4b"#"deepseek-r1:8b"
     embed_model: str = "nomic-embed-text"
     knowledge_extractor_model: str = "llama3:8b"  # Use same model as chat for better JSON handling
     temperature: float = 0.7
